@@ -1,10 +1,12 @@
 package com.bixbox.admin.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @Builder
 @Getter
 public class AdminDto {
@@ -12,8 +14,8 @@ public class AdminDto {
     private String adminEmail;
     @NotEmpty(message = "필수 입력값입니다")
     private String adminProfileImg;
-    @NotEmpty(message = "필수 입력값입니다")
-    private String adminAuthority;
+    @NotNull
+    private AuthorityType adminAuthority;
     @NotEmpty(message = "필수 입력값입니다")
     private String adminName;
 }

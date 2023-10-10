@@ -1,6 +1,6 @@
 package com.bixbox.admin.domain;
 import com.bixbox.admin.dto.AdminDto;
-import com.bixbox.admin.enums.UserAuthority;
+import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -44,7 +44,7 @@ public class Admin {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private UserAuthority adminAuthority;
+    private AuthorityType adminAuthority;
 
     @CreatedDate
     @ColumnDefault("now()")
@@ -65,7 +65,7 @@ public class Admin {
                 .adminName(adminDto.getAdminName())
                 .adminEmail(adminDto.getAdminEmail())
                 .adminProfileImg(adminDto.getAdminProfileImg())
-                .adminAuthority(UserAuthority.valueOf(adminDto.getAdminAuthority()))
+                .adminAuthority(adminDto.getAdminAuthority())
                 .build();
     }
 }

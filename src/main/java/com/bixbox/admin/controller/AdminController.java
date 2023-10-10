@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -16,11 +17,11 @@ import javax.validation.Valid;
 public class AdminController {
 
     private final AdminService adminService;
-    /*
-    Admin 추가
-     */
+
+    // Admin 추가
     @PostMapping("")
     public ResponseEntity<String> registerAdminInfo(@Valid @RequestBody AdminDto adminDto) {
+        System.out.println(adminDto.getAdminAuthority());
         return ResponseEntity.ok(adminService.registerAdminInfo(adminDto).getAdminId());
     }
 
@@ -29,4 +30,11 @@ public class AdminController {
     public ResponseEntity<Iterable<Admin>> getAllAdminInfo(){
         return ResponseEntity.ok(adminService.getAllAdminInfo());
     }
+
+    // 관리자 1명 정보 조회
+    @GetMapping("/one")
+    public ResponseEntity<Admin> getAdminInfo(@Valid @RequestHeader String adminId){
+        return ResponseEntity.ok(adminService.getAdminInfo(adminId));
+    }
+
 }

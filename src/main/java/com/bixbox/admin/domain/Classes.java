@@ -6,10 +6,10 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Table(name = "class")
+@Table(name = "classes")
 @Entity
 @DynamicInsert
-public class Class {
+public class Classes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long classId;

@@ -15,7 +15,7 @@ public class AdminInfoResponse {
     private String adminProfileImg;
     private String adminAuthority;
 
-    public static AdminInfoResponse convertMemberToMemberInfoResponse(Admin adminInfo) {
+    public static AdminInfoResponse convertAdminToAdminInfoResponse(Admin adminInfo) {
         return AdminInfoResponse.builder().adminName(adminInfo.getAdminName())
                 .adminEmail(adminInfo.getAdminEmail())
                 .adminProfileImg(adminInfo.getAdminProfileImg())

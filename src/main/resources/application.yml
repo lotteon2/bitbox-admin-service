@@ -1,6 +1,26 @@
 server:
   port: 9999
 spring:
+  kafka:
+    producer:
+      bootstrap-servers: http://bitbox-etc.kro.kr:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      bootstrap-servers: http://bitbox-etc.kro.kr:9092
+      group-id: bitbox
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring:
+          deserializer:
+            value:
+              delegate:
+                class: org.springframework.kafka.support.serializer.JsonDeserializer
+          json:
+            trusted:
+              packages: "*"
   application:
     name: admin-service
   h2:
@@ -11,10 +31,11 @@ spring:
       path: /h2-console
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
   datasource:
     url: jdbc:mysql://localhost:3306/mydb
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+memberAuthorityTopicName: memberAuthorityModifyTopic

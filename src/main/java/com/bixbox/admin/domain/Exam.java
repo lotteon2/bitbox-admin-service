@@ -12,7 +12,7 @@ public class Exam {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
-    private Class classes;
+    private Classes classes;
 
     @OneToMany(mappedBy = "exam", fetch = FetchType.LAZY)
     private List<Grade> grades;

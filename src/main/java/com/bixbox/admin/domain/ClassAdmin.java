@@ -13,7 +13,7 @@ public class ClassAdmin {
     @MapsId("classId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
-    private Class classes;
+    private Classes classes;
 
     @MapsId("adminId")
     @ManyToOne(fetch = FetchType.LAZY)
