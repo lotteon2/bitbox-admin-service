@@ -2,16 +2,21 @@ package com.bixbox.admin.service;
 
 import com.bixbox.admin.domain.Admin;
 import com.bixbox.admin.dto.AdminDto;
+import com.bixbox.admin.dto.AdminUpdateDto;
 import com.bixbox.admin.exception.DuplicationEmailException;
 import com.bixbox.admin.exception.InvalidAdminIdException;
 import com.bixbox.admin.repository.AdminInfoRepository;
 import io.github.bitbox.bitbox.dto.MemberAuthorityDto;
+import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.kafka.annotation.KafkaListener;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -21,14 +26,6 @@ public class AdminService {
     private final KafkaTemplate<String, MemberAuthorityDto> memberAuthorityDtoKafkaTemplate;
     @Value("${memberAuthorityTopicName}")
     private String memberAuthorityTopicName;
-
-    @KafkaListener(topics = "${memberAuthorityTopicName}")
-    public void testRegist(MemberAuthorityDto memberDto) {
-
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println(memberDto.toString());
-    }
-
     public Admin registerAdminInfo(AdminDto adminDto) {
         if (adminInfoRepository.countByAdminEmailAndDeletedIsFalse(adminDto.getAdminEmail()) != 0) {
             throw new DuplicationEmailException("ERROR100 - 중복 이메일 에러");
@@ -45,8 +42,36 @@ public class AdminService {
         return adminInfoRepository.findById(adminId).orElseThrow(()->new InvalidAdminIdException("ERROR101 - 존재하지 않는 관리자 정보"));
     }
 
-    public Iterable<Admin> getAllAdminInfo(){
-        return adminInfoRepository.findAll();
+    public List<Admin> getAllAdminInfo(){
+        return (List<Admin>) adminInfoRepository.findAll();
+    }
+
+    @Transactional
+    public Admin updateAdminInfo(String adminId, AdminUpdateDto adminDto){
+        Admin admin = adminInfoRepository.findById(adminId).orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
+        return admin.convertAdminInfoForUpdate(admin, adminDto);
+    }
+
+    @Transactional
+    public Admin updateAdminRole(MemberAuthorityDto memberAuthorityDto){
+        Admin admin = adminInfoRepository.findById(memberAuthorityDto.getMemberId()).orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
+        admin.setAdminAuthority(memberAuthorityDto.getMemberAuthority());
+        memberAuthorityDtoKafkaTemplate.send(memberAuthorityTopicName, MemberAuthorityDto.builder()
+                .memberId(memberAuthorityDto.getMemberId())
+                .memberAuthority(memberAuthorityDto.getMemberAuthority())
+                .build());
+        return admin;
+    }
+
+    @Transactional
+    public Boolean deleteAdmin(String adminId){
+        Admin admin = adminInfoRepository.findById(adminId).orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
+        admin.setDeleted(true);
+        memberAuthorityDtoKafkaTemplate.send(memberAuthorityTopicName, MemberAuthorityDto.builder()
+                .memberId(adminId)
+                .memberAuthority(AuthorityType.GENERAL)
+                .build());
+        return admin.isDeleted();
     }
 }
 

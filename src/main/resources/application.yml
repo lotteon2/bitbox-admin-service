@@ -3,11 +3,11 @@ server:
 spring:
   kafka:
     producer:
-      bootstrap-servers: http://bitbox-etc.kro.kr:9092
+      bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
-      bootstrap-servers: http://bitbox-etc.kro.kr:9092
+      bootstrap-servers: localhost:9092
       group-id: bitbox
       auto-offset-reset: latest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer

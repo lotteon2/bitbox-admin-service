@@ -18,4 +18,5 @@ public class AdminDto {
     private AuthorityType adminAuthority;
     @NotEmpty(message = "필수 입력값입니다")
     private String adminName;
+    private String adminPassword;
 }

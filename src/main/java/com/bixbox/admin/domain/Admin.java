@@ -1,5 +1,7 @@
 package com.bixbox.admin.domain;
 import com.bixbox.admin.dto.AdminDto;
+import com.bixbox.admin.dto.AdminUpdateDto;
+import io.github.bitbox.bitbox.dto.MemberAuthorityDto;
 import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -7,6 +9,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,6 +23,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Admin {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -32,6 +36,7 @@ public class Admin {
     @Column(nullable = false)
     private String adminEmail;
 
+    // TODO : 암호화 추가
     @Column(nullable = false)
     @ColumnDefault("1111")
     private String adminPassword;
@@ -67,5 +72,12 @@ public class Admin {
                 .adminProfileImg(adminDto.getAdminProfileImg())
                 .adminAuthority(adminDto.getAdminAuthority())
                 .build();
+    }
+
+    public static Admin convertAdminInfoForUpdate(Admin original, AdminUpdateDto update) {
+        if(update.getAdminPassword() != null) original.setAdminPassword(update.getAdminPassword());
+        if(update.getAdminProfileImg() != null) original.setAdminProfileImg(update.getAdminProfileImg());
+        if(update.getAdminName() != null) original.setAdminName(update.getAdminName());
+        return original;
     }
 }
