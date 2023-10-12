@@ -65,19 +65,4 @@ public class Admin {
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private boolean deleted;
 
-    public static Admin convertAdminDtoToAdmin(AdminDto adminDto) {
-        return Admin.builder()
-                .adminName(adminDto.getAdminName())
-                .adminEmail(adminDto.getAdminEmail())
-                .adminProfileImg(adminDto.getAdminProfileImg())
-                .adminAuthority(adminDto.getAdminAuthority())
-                .build();
-    }
-
-    public static Admin convertAdminInfoForUpdate(Admin original, AdminUpdateDto update) {
-        if(update.getAdminPassword() != null) original.setAdminPassword(update.getAdminPassword());
-        if(update.getAdminProfileImg() != null) original.setAdminProfileImg(update.getAdminProfileImg());
-        if(update.getAdminName() != null) original.setAdminName(update.getAdminName());
-        return original;
-    }
 }

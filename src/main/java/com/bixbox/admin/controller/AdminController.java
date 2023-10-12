@@ -38,7 +38,7 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAdminInfo(adminId));
     }
 
-    // 관리자 정보 수정 (이미지, 비밀번호...)
+    // 관리자 정보 수정 (이미지, 비밀번호, 이름)
     @PatchMapping("")
     public ResponseEntity<Admin> updateAdminInfo(@RequestHeader String adminId, @Valid @RequestBody AdminUpdateDto adminDto){
         return ResponseEntity.ok(adminService.updateAdminInfo(adminId, adminDto));
@@ -53,8 +53,8 @@ public class AdminController {
 
     // 관리자 삭제
     @DeleteMapping("")
-    public ResponseEntity<Boolean> deleteAdmin(@Valid @RequestBody String adminId) {
-        return ResponseEntity.ok(adminService.deleteAdmin(adminId));
+    public ResponseEntity<Void> deleteAdmin(@Valid @RequestBody String adminId) {
+        adminService.deleteAdmin(adminId);
+        return ResponseEntity.ok().build();
     }
-
 }

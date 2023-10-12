@@ -13,24 +13,25 @@ import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class AdminService {
     private final AdminInfoRepository adminInfoRepository;
     private final KafkaTemplate<String, MemberAuthorityDto> memberAuthorityDtoKafkaTemplate;
     @Value("${memberAuthorityTopicName}")
     private String memberAuthorityTopicName;
+
     public Admin registerAdminInfo(AdminDto adminDto) {
         if (adminInfoRepository.countByAdminEmailAndDeletedIsFalse(adminDto.getAdminEmail()) != 0) {
             throw new DuplicationEmailException("ERROR100 - 중복 이메일 에러");
         }
-        Admin adminResult = adminInfoRepository.save(Admin.convertAdminDtoToAdmin(adminDto));
+        Admin adminResult = adminInfoRepository.save(adminDto.convertAdminDtoToAdmin(adminDto));
         memberAuthorityDtoKafkaTemplate.send(memberAuthorityTopicName, MemberAuthorityDto.builder()
                         .memberId(adminResult.getAdminId())
                         .memberAuthority(adminDto.getAdminAuthority())
@@ -38,18 +39,20 @@ public class AdminService {
         return adminResult;
     }
 
+    @Transactional(readOnly=true)
     public Admin getAdminInfo(String adminId) {
         return adminInfoRepository.findById(adminId).orElseThrow(()->new InvalidAdminIdException("ERROR101 - 존재하지 않는 관리자 정보"));
     }
 
+    @Transactional(readOnly=true)
     public List<Admin> getAllAdminInfo(){
         return (List<Admin>) adminInfoRepository.findAll();
     }
 
     @Transactional
-    public Admin updateAdminInfo(String adminId, AdminUpdateDto adminDto){
+    public Admin updateAdminInfo(String adminId, AdminUpdateDto adminUpdateDto){
         Admin admin = adminInfoRepository.findById(adminId).orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
-        return admin.convertAdminInfoForUpdate(admin, adminDto);
+        return adminUpdateDto.convertAdminInfoForUpdate(admin, adminUpdateDto);
     }
 
     @Transactional
@@ -64,14 +67,13 @@ public class AdminService {
     }
 
     @Transactional
-    public Boolean deleteAdmin(String adminId){
+    public void deleteAdmin(String adminId){
         Admin admin = adminInfoRepository.findById(adminId).orElseThrow(() -> new NullPointerException("해당 아이디가 존재하지 않습니다."));
         admin.setDeleted(true);
         memberAuthorityDtoKafkaTemplate.send(memberAuthorityTopicName, MemberAuthorityDto.builder()
                 .memberId(adminId)
                 .memberAuthority(AuthorityType.GENERAL)
                 .build());
-        return admin.isDeleted();
     }
 }
 
