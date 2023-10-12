@@ -1,10 +1,7 @@
 package com.bitbox.admin.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,6 +14,7 @@ import java.util.List;
 @Entity
 @DynamicInsert
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -52,5 +50,5 @@ public class Classes {
     private boolean deleted;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
-    private boolean isGraduate;
+    private boolean graduated;
 }

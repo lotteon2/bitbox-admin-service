@@ -2,6 +2,7 @@ package com.bitbox.admin.controller;
 
 import com.bitbox.admin.domain.Classes;
 import com.bitbox.admin.dto.ClassDto;
+import com.bitbox.admin.dto.ClassUpdateDto;
 import com.bitbox.admin.service.ClassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,20 @@ import javax.validation.Valid;
 public class ClassController {
     private final ClassService classService;
 
+    /**
+     * 반 추가(반 이름, 반 코드)
+     */
     @PostMapping("")
     public ResponseEntity<Long> registerClassInfo(@Valid @RequestBody ClassDto classDto){
         return ResponseEntity.ok(classService.registerClassInfo(classDto));
+    }
+
+    /**
+     * 클래스 정보 수정 (수료 여부, 이름)
+     */
+    @PatchMapping("/{class_id}")
+    @ResponseBody
+    public ResponseEntity<Boolean> updateClassInfo(@PathVariable Long class_id, @RequestBody ClassUpdateDto classUpdateDto){
+        return ResponseEntity.ok(classService.updateClassInfo(class_id, classUpdateDto));
     }
 }

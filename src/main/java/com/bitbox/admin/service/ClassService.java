@@ -1,7 +1,10 @@
 package com.bitbox.admin.service;
 
+import com.bitbox.admin.domain.Classes;
 import com.bitbox.admin.dto.ClassDto;
+import com.bitbox.admin.dto.ClassUpdateDto;
 import com.bitbox.admin.exception.DuplicationException;
+import com.bitbox.admin.exception.InvalidAdminIdException;
 import com.bitbox.admin.repository.ClassInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,5 +27,11 @@ public class ClassService {
         }
 
         return classInfoRepository.save(classDto.convertExamDtoToExam(classDto)).getClassId();
+    }
+
+    public Boolean updateClassInfo(Long classId, ClassUpdateDto classUpdateDto){
+        Classes classes = classInfoRepository.findById(classId).orElseThrow(()->new InvalidAdminIdException("해당 클래스 아이디가 존재하지 않습니다."));
+        classUpdateDto.covertClassInfoForUpdate(classes, classUpdateDto);
+        return true;
     }
 }
