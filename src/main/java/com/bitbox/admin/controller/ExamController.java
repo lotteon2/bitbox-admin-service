@@ -20,6 +20,8 @@ public class ExamController {
     // 시험 추가 (반, 시험 이름, 만점)
     @PostMapping("")
     public ResponseEntity<Exam> registerExam(@Valid @RequestBody ExamDto examDto){
+        System.out.println("!!!!!!!!!!!!!");
+        System.out.println(examDto);
         return ResponseEntity.ok(examService.registerExamInfo(examDto));
     }
 

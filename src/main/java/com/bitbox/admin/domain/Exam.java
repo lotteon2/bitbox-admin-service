@@ -31,5 +31,5 @@ public class Exam {
     private Long perfectScore;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
-    private boolean isDeleted;
+    private boolean deleted;
 }

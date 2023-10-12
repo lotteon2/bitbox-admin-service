@@ -1,5 +1,6 @@
 package com.bitbox.admin.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -28,6 +29,7 @@ public class Admin {
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     private String adminId;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "admin")
     private List<ClassAdmin> classAdmins;
 

@@ -1,5 +1,6 @@
 package com.bitbox.admin.service.response;
-import com.bixbox.admin.domain.Admin;
+
+import com.bitbox.admin.domain.Admin;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;

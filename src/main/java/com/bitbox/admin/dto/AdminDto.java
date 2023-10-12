@@ -1,6 +1,6 @@
 package com.bitbox.admin.dto;
 
-import com.bixbox.admin.domain.Admin;
+import com.bitbox.admin.domain.Admin;
 import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.Builder;
 import lombok.Getter;

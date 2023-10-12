@@ -1,6 +1,5 @@
 package com.bitbox.admin.repository;
 
-import com.bixbox.admin.domain.Admin;
 import com.bitbox.admin.domain.Exam;
 import org.springframework.data.repository.CrudRepository;
 
