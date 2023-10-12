@@ -1,7 +1,10 @@
 package com.bitbox.admin.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,6 +17,9 @@ import java.util.List;
 @Entity
 @DynamicInsert
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Classes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +49,7 @@ public class Classes {
     private LocalDateTime createdAt;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
-    private boolean isDeleted;
+    private boolean deleted;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isGraduate;

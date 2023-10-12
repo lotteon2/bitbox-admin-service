@@ -2,7 +2,7 @@ package com.bitbox.admin.service;
 
 import com.bitbox.admin.dto.AdminDto;
 import com.bitbox.admin.dto.AdminUpdateDto;
-import com.bitbox.admin.exception.DuplicationEmailException;
+import com.bitbox.admin.exception.DuplicationException;
 import com.bitbox.admin.exception.InvalidAdminIdException;
 import com.bitbox.admin.repository.AdminInfoRepository;
 import com.bitbox.admin.domain.Admin;
@@ -29,7 +29,7 @@ public class AdminService {
 
     public Admin registerAdminInfo(AdminDto adminDto) {
         if (adminInfoRepository.countByAdminEmailAndDeletedIsFalse(adminDto.getAdminEmail()) != 0) {
-            throw new DuplicationEmailException("ERROR100 - 중복 이메일 에러");
+            throw new DuplicationException("ERROR100 - 중복 이메일 에러");
         }
         Admin adminResult = adminInfoRepository.save(adminDto.convertAdminDtoToAdmin(adminDto));
         memberAuthorityDtoKafkaTemplate.send(memberAuthorityTopicName, MemberAuthorityDto.builder()

@@ -5,7 +5,7 @@ import com.bitbox.admin.domain.Classes;
 import com.bitbox.admin.domain.Exam;
 import com.bitbox.admin.dto.ExamDto;
 import com.bitbox.admin.dto.ExamUpdateDto;
-import com.bitbox.admin.exception.DuplicationEmailException;
+import com.bitbox.admin.exception.DuplicationException;
 import com.bitbox.admin.exception.InvalidAdminIdException;
 import com.bitbox.admin.repository.ClassInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class ExamService {
     @Transactional
     public Exam registerExamInfo(ExamDto examDto) {
         if (examInfoRepository.existsByClasses_ClassIdAndExamNameAndDeletedIsFalse(examDto.getClassId(), examDto.getExamName())) {
-            throw new DuplicationEmailException("ERROR100 - 중복 시험 에러");
+            throw new DuplicationException("ERROR100 - 중복 시험 에러");
         }
 
         Classes classes = classInfoRepository.findById(examDto.getClassId()).orElseThrow(()-> new InvalidAdminIdException("존재하지 않는 클래스 아이디입니다."));

@@ -6,12 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Builder
 @Getter
 @Setter
 public class ExamUpdateDto {
-    @NotEmpty(message = "필수 입력값입니다")
+    @NotNull(message = "필수 입력값입니다")
     private Long examId;
     private String examName;
     private Long perfectScore;

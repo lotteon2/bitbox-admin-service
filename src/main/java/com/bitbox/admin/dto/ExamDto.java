@@ -20,8 +20,6 @@ public class ExamDto {
     private Long perfectScore;
 
     public Exam convertExamDtoToExam(ExamDto examDto, Classes classes){
-        System.out.println("!!!!!!!!!!!!!!!!!!!!");
-        System.out.println(classes.getClassName());
         return Exam.builder()
                 .examName(examDto.getExamName())
                 .perfectScore(examDto.getPerfectScore())
