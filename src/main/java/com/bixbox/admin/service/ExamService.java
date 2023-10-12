@@ -4,7 +4,6 @@ import com.bixbox.admin.domain.Exam;
 import com.bixbox.admin.dto.ExamDto;
 import com.bixbox.admin.exception.DuplicationEmailException;
 import com.bixbox.admin.repository.ExamInfoRepository;
-import io.github.bitbox.bitbox.dto.MemberAuthorityDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class ExamService {
             throw new DuplicationEmailException("ERROR100 - 중복 시험 에러");
         }
         // TODO 추가해야함
-        Exam adminResult = examInfoRepository.save(examDto.convertAdminDtoToAdmin(adminDto));
+        Exam adminResult = examInfoRepository.save(examDto.convertExamDtoToExam(examDto));
         return adminResult;
     }
 }

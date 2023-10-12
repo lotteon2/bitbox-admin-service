@@ -1,9 +1,16 @@
 package com.bixbox.admin.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="exam")
 public class Exam {
     @Id
