@@ -1,6 +1,5 @@
 package com.bitbox.admin.controller;
 
-import com.bitbox.admin.domain.Classes;
 import com.bitbox.admin.dto.ClassDto;
 import com.bitbox.admin.dto.ClassUpdateDto;
 import com.bitbox.admin.service.ClassService;

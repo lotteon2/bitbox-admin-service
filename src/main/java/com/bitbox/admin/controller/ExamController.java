@@ -24,10 +24,10 @@ public class ExamController {
     }
 
     // 특정 반 시험 조회
-    @GetMapping("/{class_id}")
+    @GetMapping("/{classId}")
     @ResponseBody
-    public ResponseEntity<Exam> getExamInfoByClassId(@PathVariable Long class_id) {
-        return ResponseEntity.ok(examService.getExamInfoByClassId(class_id));
+    public ResponseEntity<Exam> getExamInfoByClassId(@PathVariable Long classId) {
+        return ResponseEntity.ok(examService.getExamInfoByClassId(classId));
     }
 
     // 시험 수정 및 삭제
