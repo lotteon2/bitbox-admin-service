@@ -28,7 +28,6 @@ public class ClassController {
      * 클래스 정보 수정 (수료 여부, 이름)
      */
     @PatchMapping("/{classId}")
-    @ResponseBody
     public ResponseEntity<Boolean> updateClassInfo(@PathVariable Long classId, @RequestBody ClassUpdateDto classUpdateDto){
         return ResponseEntity.ok(classService.updateClassInfo(classId, classUpdateDto));
     }
