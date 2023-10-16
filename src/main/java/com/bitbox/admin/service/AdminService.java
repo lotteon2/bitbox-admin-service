@@ -52,9 +52,11 @@ public class AdminService {
     public List<AdminInfoResponse> getAllAdminInfo(){
         List<Admin> admins = adminInfoRepository.findAllByDeletedIsFalse();
         List<AdminInfoResponse> adminResults = new ArrayList();
-        for(int i=0; i<admins.size(); i++){
-            adminResults.add(AdminInfoResponse.convertAdminToAdminInfoResponse(admins.get(i)));
+
+        for(Admin admin: admins){
+            adminResults.add(AdminInfoResponse.convertAdminToAdminInfoResponse(admin));
         }
+
         return adminResults;
     }
 
