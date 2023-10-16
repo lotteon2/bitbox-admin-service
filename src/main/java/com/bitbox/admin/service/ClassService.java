@@ -18,10 +18,11 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class ClassService {
     private final ClassInfoRepository classInfoRepository;
 
+    @Transactional
     public Long registerClassInfo(ClassDto classDto) {
         if(classInfoRepository.existsByClassCode(classDto.getClassCode())){
             throw new DuplicationException("반 생성 | 중복 코드 에러");
@@ -33,6 +34,7 @@ public class ClassService {
         return classInfoRepository.save(classDto.convertExamDtoToExam(classDto)).getClassId();
     }
 
+    @Transactional
     public Boolean updateClassInfo(Long classId, ClassUpdateDto classUpdateDto){
         Classes classes = classInfoRepository.findById(classId).orElseThrow(()->new InvalidClassIdException("해당 클래스 아이디가 존재하지 않습니다."));
         classUpdateDto.covertClassInfoForUpdate(classes, classUpdateDto);

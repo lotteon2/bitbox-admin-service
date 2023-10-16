@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ExamService {
     private final ExamInfoRepository examInfoRepository;
     private final ClassInfoRepository classInfoRepository;
@@ -32,12 +33,10 @@ public class ExamService {
         return examResult;
     }
 
-    @Transactional(readOnly=true)
     public Exam getExamInfoByClassId(Long class_id){
         Exam exam = examInfoRepository.findById(class_id).orElseThrow(()-> new InvalidAdminIdException("존재하지 않는 클래스 아이디입니다."));
         return exam;
     }
-
     @Transactional
     public boolean updateExamInfo(ExamUpdateDto examUpdateDto){
         Exam exam = examInfoRepository.findById(examUpdateDto.getExamId()).orElseThrow(()-> new InvalidAdminIdException("존재하지 않는 시험 아이디입니다."));

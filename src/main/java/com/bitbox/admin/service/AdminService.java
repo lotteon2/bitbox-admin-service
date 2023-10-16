@@ -22,13 +22,15 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class AdminService {
     private final AdminInfoRepository adminInfoRepository;
     private final KafkaTemplate<String, MemberAuthorityDto> memberAuthorityDtoKafkaTemplate;
+    private String INVALID_ADMIN_EXCEPTION = "ERROR101 - 존재하지 않는 관리자 정보";
     @Value("${memberAuthorityTopicName}")
     private String memberAuthorityTopicName;
 
+    @Transactional
     public Admin registerAdminInfo(AdminDto adminDto) {
         System.out.println(adminDto);
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -43,12 +45,10 @@ public class AdminService {
         return adminResult;
     }
 
-    @Transactional(readOnly=true)
     public Admin getAdminInfo(String adminId) {
-        return adminInfoRepository.findById(adminId).orElseThrow(()->new InvalidAdminIdException("ERROR101 - 존재하지 않는 관리자 정보"));
+        return adminInfoRepository.findById(adminId).orElseThrow(()->new InvalidAdminIdException(INVALID_ADMIN_EXCEPTION));
     }
 
-    @Transactional(readOnly=true)
     public List<AdminInfoResponse> getAllAdminInfo(){
         List<Admin> admins = adminInfoRepository.findAllByDeletedIsFalse();
         List<AdminInfoResponse> adminResults = new ArrayList();
@@ -60,14 +60,14 @@ public class AdminService {
 
     @Transactional
     public boolean updateAdminInfo(String adminId, AdminUpdateDto adminUpdateDto){
-        Admin admin = adminInfoRepository.findById(adminId).orElseThrow(() -> new InvalidAdminIdException("해당 어드민 아이디가 존재하지 않습니다."));
+        Admin admin = adminInfoRepository.findById(adminId).orElseThrow(() -> new InvalidAdminIdException(INVALID_ADMIN_EXCEPTION));
         adminUpdateDto.convertAdminInfoForUpdate(admin, adminUpdateDto);
         return true;
     }
 
     @Transactional
     public Admin updateAdminRole(MemberAuthorityDto memberAuthorityDto){
-        Admin admin = adminInfoRepository.findById(memberAuthorityDto.getMemberId()).orElseThrow(() -> new InvalidAdminIdException("해당 어드민 아이디가 존재하지 않습니다."));
+        Admin admin = adminInfoRepository.findById(memberAuthorityDto.getMemberId()).orElseThrow(() -> new InvalidAdminIdException(INVALID_ADMIN_EXCEPTION));
         admin.setAdminAuthority(memberAuthorityDto.getMemberAuthority());
         memberAuthorityDtoKafkaTemplate.send(memberAuthorityTopicName, MemberAuthorityDto.builder()
                 .memberId(memberAuthorityDto.getMemberId())
@@ -78,7 +78,7 @@ public class AdminService {
 
     @Transactional
     public void deleteAdmin(String adminId){
-        Admin admin = adminInfoRepository.findById(adminId).orElseThrow(() -> new InvalidAdminIdException("해당 어드민 아이디가 존재하지 않습니다."));
+        Admin admin = adminInfoRepository.findById(adminId).orElseThrow(() -> new InvalidAdminIdException(INVALID_ADMIN_EXCEPTION));
         admin.setDeleted(true);
         memberAuthorityDtoKafkaTemplate.send(memberAuthorityTopicName, MemberAuthorityDto.builder()
                 .memberId(adminId)
