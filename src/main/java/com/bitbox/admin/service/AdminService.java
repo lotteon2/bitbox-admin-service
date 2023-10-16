@@ -6,6 +6,7 @@ import com.bitbox.admin.exception.DuplicationException;
 import com.bitbox.admin.exception.InvalidAdminIdException;
 import com.bitbox.admin.repository.AdminInfoRepository;
 import com.bitbox.admin.domain.Admin;
+import com.bitbox.admin.service.response.AdminInfoResponse;
 import io.github.bitbox.bitbox.dto.MemberAuthorityDto;
 import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,14 +30,16 @@ public class AdminService {
     private String memberAuthorityTopicName;
 
     public Admin registerAdminInfo(AdminDto adminDto) {
+        System.out.println(adminDto);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (adminInfoRepository.countByAdminEmailAndDeletedIsFalse(adminDto.getAdminEmail()) != 0) {
             throw new DuplicationException("ERROR100 - 중복 이메일 에러");
         }
         Admin adminResult = adminInfoRepository.save(adminDto.convertAdminDtoToAdmin(adminDto));
-        memberAuthorityDtoKafkaTemplate.send(memberAuthorityTopicName, MemberAuthorityDto.builder()
-                        .memberId(adminResult.getAdminId())
-                        .memberAuthority(adminDto.getAdminAuthority())
-                .build());
+//        memberAuthorityDtoKafkaTemplate.send(memberAuthorityTopicName, MemberAuthorityDto.builder()
+//                        .memberId(adminResult.getAdminId())
+//                        .memberAuthority(adminDto.getAdminAuthority())
+//                .build());
         return adminResult;
     }
 
@@ -45,8 +49,13 @@ public class AdminService {
     }
 
     @Transactional(readOnly=true)
-    public List<Admin> getAllAdminInfo(){
-        return (List<Admin>) adminInfoRepository.findAll();
+    public List<AdminInfoResponse> getAllAdminInfo(){
+        List<Admin> admins = adminInfoRepository.findAllByDeletedIsFalse();
+        List<AdminInfoResponse> adminResults = new ArrayList();
+        for(int i=0; i<admins.size(); i++){
+            adminResults.add(AdminInfoResponse.convertAdminToAdminInfoResponse(admins.get(i)));
+        }
+        return adminResults;
     }
 
     @Transactional

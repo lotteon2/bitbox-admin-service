@@ -13,9 +13,6 @@ import javax.validation.constraints.NotNull;
 public class AdminDto {
     @NotEmpty(message = "필수 입력값입니다")
     private String adminEmail;
-    @NotEmpty(message = "필수 입력값입니다")
-    private String adminProfileImg;
-    @NotNull
     private AuthorityType adminAuthority;
     @NotEmpty(message = "필수 입력값입니다")
     private String adminName;
@@ -25,7 +22,6 @@ public class AdminDto {
         return Admin.builder()
                 .adminName(adminDto.getAdminName())
                 .adminEmail(adminDto.getAdminEmail())
-                .adminProfileImg(adminDto.getAdminProfileImg())
                 .adminAuthority(adminDto.getAdminAuthority())
                 .build();
     }

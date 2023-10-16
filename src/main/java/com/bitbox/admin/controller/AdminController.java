@@ -4,6 +4,7 @@ import com.bitbox.admin.domain.Admin;
 import com.bitbox.admin.dto.AdminDto;
 import com.bitbox.admin.dto.AdminUpdateDto;
 import com.bitbox.admin.service.AdminService;
+import com.bitbox.admin.service.response.AdminInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class AdminController {
 
     private final AdminService adminService;
@@ -22,12 +24,14 @@ public class AdminController {
     // Admin 추가 (+ 카프카 추가)
     @PostMapping("")
     public ResponseEntity<String> registerAdminInfo(@Valid @RequestBody AdminDto adminDto) {
+        System.out.println(adminDto);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return ResponseEntity.ok(adminService.registerAdminInfo(adminDto).getAdminId());
     }
 
     // 전체 관리자 정보 조회
     @GetMapping("")
-    public ResponseEntity<List<Admin>> getAllAdminInfo(){
+    public ResponseEntity<List<AdminInfoResponse>> getAllAdminInfo(){
         return ResponseEntity.ok(adminService.getAllAdminInfo());
     }
 

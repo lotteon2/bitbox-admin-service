@@ -13,6 +13,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/admin/exam")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ExamController {
 
     private final ExamService examService;

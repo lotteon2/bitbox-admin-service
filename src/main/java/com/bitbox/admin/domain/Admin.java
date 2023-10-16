@@ -44,7 +44,7 @@ public class Admin {
     @Column(nullable = false)
     private String adminName;
 
-    @Column(nullable = false)
+    @Column
     private String adminProfileImg;
 
     @Column(nullable = false)
