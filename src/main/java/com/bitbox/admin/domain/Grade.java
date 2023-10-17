@@ -1,9 +1,16 @@
 package com.bitbox.admin.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="grade")
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Grade {
     @Id
     @GeneratedValue
@@ -18,7 +25,7 @@ public class Grade {
     private Exam exam;
 
     @Column(nullable = false)
-    private Long memberId;
+    private String memberId;
 
     @Column(nullable = false)
     private Long score;

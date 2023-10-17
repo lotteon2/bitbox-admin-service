@@ -1,6 +1,5 @@
 package com.bitbox.admin.controller;
 
-import com.bitbox.admin.domain.Admin;
 import com.bitbox.admin.dto.AdminDto;
 import com.bitbox.admin.dto.AdminUpdateDto;
 import com.bitbox.admin.service.AdminService;
@@ -39,7 +38,7 @@ public class AdminController {
 
     // 관리자 1명 정보 조회
     @GetMapping("/one")
-    public ResponseEntity<AdminInfoResponse> getAdminInfo(@Valid @RequestHeader String adminId, AuthorityType authorityType){
+    public ResponseEntity<AdminInfoResponse> getAdminInfo(@Valid @RequestHeader String adminId, @Valid @RequestHeader AuthorityType authorityType){
         return ResponseEntity.ok(adminService.getAdminInfo(adminId, authorityType));
     }
 

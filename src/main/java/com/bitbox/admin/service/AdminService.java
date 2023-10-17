@@ -33,7 +33,7 @@ public class AdminService {
     private final ClassInfoRepository classInfoRepository;
     private final ClassAdminInfoRepository classAdminInfoRepository;
     private final KafkaTemplate<String, MemberAuthorityDto> memberAuthorityDtoKafkaTemplate;
-    private String INVALID_ADMIN_EXCEPTION = "ERROR101 - 존재하지 않는 관리자 정보";
+    private String INVALID_ADMIN_EXCEPTION = "존재하지 않는 관리자 정보";
     @Value("${memberAuthorityTopicName}")
     private String memberAuthorityTopicName;
 
