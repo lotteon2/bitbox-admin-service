@@ -29,7 +29,7 @@ public class GradeService {
     private final ClassInfoRepository classInfoRepository;
     private final ExamInfoRepository examInfoRepository;
     @Transactional
-    public Grade registerGradeInfo(GradeDto gradeDto, "유효한 학생 id 리스트") {
+    public Grade registerGradeInfo(GradeDto gradeDto) {
         Classes classes = classInfoRepository.findById(gradeDto.getClassId()).orElseThrow(()-> new InvalidClassIdException("존재하지 않는 클래스 정보"));
         Exam exam = examInfoRepository.findById(gradeDto.getExamId()).orElseThrow(()->new InvalidExamIdException("존재하지 않는 시험 정보"));
         // 이 안에서는 검증 필요 X
@@ -40,6 +40,16 @@ public class GradeService {
     public List<Grade> getGradeInfosByClassId(Long classId){
             List<Grade> grades = gradeInfoRepository.findAllByClasses_ClassIdAndDeletedIsFalse(classId);
             return grades;
+    }
+
+    @Transactional(readOnly = true)
+    public List<GradeInfoResponse> getMyGrades(String memberId){
+        List<Grade> grades = gradeInfoRepository.findAllByMemberIdAndDeletedIsFalse(memberId);
+        List<GradeInfoResponse> gradeResults = new ArrayList<>();
+        for(Grade grade: grades){
+            gradeResults.add(GradeInfoResponse.convertGradeToGradeResponse(grade));
+        }
+        return gradeResults;
     }
 
     @Transactional

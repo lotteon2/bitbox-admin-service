@@ -24,11 +24,11 @@ public class GradeController {
      * @return Grade
      * 시험,학생,반정보를 받아서 점수를 등록
      */
+    
+    //TODO : 정윤이랑 유저검증 로직 추가
     @PostMapping("")
     public ResponseEntity<Grade> registerGradeInfo(@Valid @RequestBody GradeDto gradeDto){
-//        gradeDto.getMemberId(), classId
-        //정윤에게 유효한 학생 정보 리스트 받아오기
-        return ResponseEntity.ok(gradeService.registerGradeInfo(gradeDto, "유효한 학생 id 리스트"));
+        return ResponseEntity.ok(gradeService.registerGradeInfo(gradeDto));
     }
 
     /**
@@ -49,5 +49,16 @@ public class GradeController {
     @GetMapping("/{memberId}")
     public ResponseEntity<List<GradeInfoResponse>> getGradesByMemberId(@PathVariable String memberId){
         return ResponseEntity.ok(gradeService.getGradeInfoByMemberId(memberId));
+    }
+
+    /**
+     *
+     * @param memberId
+     * @return
+     * 정윤이가 조회하는 내 성적 조회
+     */
+    @GetMapping("/mygrade")
+    public ResponseEntity<List<GradeInfoResponse>> getMyGrades(@RequestHeader String memberId){
+        return ResponseEntity.ok(gradeService.getMyGrades(memberId));
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/exam")
@@ -20,20 +21,19 @@ public class ExamController {
 
     // 시험 추가 (반, 시험 이름, 만점)
     @PostMapping("")
-    public ResponseEntity<Exam> registerExam(@Valid @RequestBody ExamDto examDto){
+    public ResponseEntity<Long> registerExam(@Valid @RequestBody ExamDto examDto){
         return ResponseEntity.ok(examService.registerExamInfo(examDto));
     }
 
     // 특정 반 시험 조회
     @GetMapping("/{classId}")
-    @ResponseBody
-    public ResponseEntity<Exam> getExamInfoByClassId(@PathVariable Long classId) {
+    public ResponseEntity<List<Exam>> getExamInfoByClassId(@PathVariable Long classId) {
         return ResponseEntity.ok(examService.getExamInfoByClassId(classId));
     }
 
     // 시험 수정 및 삭제
-    @PatchMapping("")
-    public ResponseEntity<Boolean> updateExamInfo(@Valid @RequestBody ExamUpdateDto examUpdateDto){
-        return ResponseEntity.ok(examService.updateExamInfo(examUpdateDto));
+    @PatchMapping("/{examId}")
+    public ResponseEntity<Boolean> updateExamInfo(@PathVariable Long examId, @Valid @RequestBody ExamUpdateDto examUpdateDto){
+        return ResponseEntity.ok(examService.updateExamInfo(examId, examUpdateDto));
     }
 }

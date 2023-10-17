@@ -1,5 +1,7 @@
 package com.bitbox.admin.service;
 
+import com.bitbox.admin.exception.InvalidClassIdException;
+import com.bitbox.admin.exception.InvalidExamIdException;
 import com.bitbox.admin.repository.ExamInfoRepository;
 import com.bitbox.admin.domain.Classes;
 import com.bitbox.admin.domain.Exam;
@@ -13,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -22,7 +26,7 @@ public class ExamService {
     private final ClassInfoRepository classInfoRepository;
 
     @Transactional
-    public Exam registerExamInfo(ExamDto examDto) {
+    public Long registerExamInfo(ExamDto examDto) {
         if (examInfoRepository.existsByClasses_ClassIdAndExamNameAndDeletedIsFalse(examDto.getClassId(), examDto.getExamName())) {
             throw new DuplicationException("ERROR100 - 중복 시험 에러");
         }
@@ -30,16 +34,16 @@ public class ExamService {
         Classes classes = classInfoRepository.findById(examDto.getClassId()).orElseThrow(()-> new InvalidAdminIdException("존재하지 않는 클래스 아이디입니다."));
 
         Exam examResult = examInfoRepository.save(examDto.convertExamDtoToExam(examDto, classes));
-        return examResult;
+        return examResult.getExamId();
     }
 
-    public Exam getExamInfoByClassId(Long class_id){
-        Exam exam = examInfoRepository.findById(class_id).orElseThrow(()-> new InvalidAdminIdException("존재하지 않는 클래스 아이디입니다."));
-        return exam;
+    public List<Exam> getExamInfoByClassId(Long classId){
+        Classes classes = classInfoRepository.findById(classId).orElseThrow(() -> new InvalidClassIdException("존재하지 않는 클래스 아이디입니다."));
+        return examInfoRepository.findExamByClasses_ClassIdAndDeletedIsFalse(classes.getClassId());
     }
     @Transactional
-    public boolean updateExamInfo(ExamUpdateDto examUpdateDto){
-        Exam exam = examInfoRepository.findById(examUpdateDto.getExamId()).orElseThrow(()-> new InvalidAdminIdException("존재하지 않는 시험 아이디입니다."));
+    public boolean updateExamInfo(Long examId, ExamUpdateDto examUpdateDto){
+        Exam exam = examInfoRepository.findById(examId).orElseThrow(()-> new InvalidExamIdException("존재하지 않는 시험 아이디입니다."));
         examUpdateDto.convertExamInfoForUpdate(exam, examUpdateDto);
         return true;
     }

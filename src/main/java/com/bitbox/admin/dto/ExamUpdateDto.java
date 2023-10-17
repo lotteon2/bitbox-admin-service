@@ -12,8 +12,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 public class ExamUpdateDto {
-    @NotNull(message = "필수 입력값입니다")
-    private Long examId;
+//    @NotNull(message = "필수 입력값입니다")
     private String examName;
     private Long perfectScore;
     private Boolean isDeleted;
