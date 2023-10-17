@@ -1,11 +1,16 @@
 package com.bitbox.admin.service;
 
+import com.bitbox.admin.domain.ClassAdmin;
+import com.bitbox.admin.domain.Classes;
+import com.bitbox.admin.domain.key.ClassAdminId;
 import com.bitbox.admin.dto.AdminDto;
 import com.bitbox.admin.dto.AdminUpdateDto;
 import com.bitbox.admin.exception.DuplicationException;
 import com.bitbox.admin.exception.InvalidAdminIdException;
 import com.bitbox.admin.repository.AdminInfoRepository;
 import com.bitbox.admin.domain.Admin;
+import com.bitbox.admin.repository.ClassAdminInfoRepository;
+import com.bitbox.admin.repository.ClassInfoRepository;
 import com.bitbox.admin.service.response.AdminInfoResponse;
 import io.github.bitbox.bitbox.dto.MemberAuthorityDto;
 import io.github.bitbox.bitbox.enums.AuthorityType;
@@ -25,28 +30,40 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class AdminService {
     private final AdminInfoRepository adminInfoRepository;
+    private final ClassInfoRepository classInfoRepository;
+    private final ClassAdminInfoRepository classAdminInfoRepository;
     private final KafkaTemplate<String, MemberAuthorityDto> memberAuthorityDtoKafkaTemplate;
     private String INVALID_ADMIN_EXCEPTION = "ERROR101 - 존재하지 않는 관리자 정보";
     @Value("${memberAuthorityTopicName}")
     private String memberAuthorityTopicName;
 
     @Transactional
-    public Admin registerAdminInfo(AdminDto adminDto) {
-        System.out.println(adminDto);
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    public Admin registerAdminInfo(AdminDto adminDto, Long classId) {
         if (adminInfoRepository.countByAdminEmailAndDeletedIsFalse(adminDto.getAdminEmail()) != 0) {
             throw new DuplicationException("ERROR100 - 중복 이메일 에러");
         }
-        Admin adminResult = adminInfoRepository.save(adminDto.convertAdminDtoToAdmin(adminDto));
+        Admin admin = adminInfoRepository.save(adminDto.convertAdminDtoToAdmin(adminDto));
+        Classes classes = classInfoRepository.findById(classId).orElseThrow(() -> new InvalidAdminIdException(INVALID_ADMIN_EXCEPTION));
+
+        ClassAdminId classAdminId = new ClassAdminId(classId, admin.getAdminId());
+        ClassAdmin classAdmin = new ClassAdmin(classAdminId, classes, admin);
+        classAdminInfoRepository.save(classAdmin);
+
 //        memberAuthorityDtoKafkaTemplate.send(memberAuthorityTopicName, MemberAuthorityDto.builder()
 //                        .memberId(adminResult.getAdminId())
 //                        .memberAuthority(adminDto.getAdminAuthority())
 //                .build());
-        return adminResult;
+        return admin;
     }
 
-    public Admin getAdminInfo(String adminId) {
-        return adminInfoRepository.findById(adminId).orElseThrow(()->new InvalidAdminIdException(INVALID_ADMIN_EXCEPTION));
+    public AdminInfoResponse getAdminInfo(String adminId, AuthorityType authorityType) {
+        Admin admin = adminInfoRepository.findById(adminId).orElseThrow(() -> new InvalidAdminIdException(INVALID_ADMIN_EXCEPTION));
+        List<Classes> classes = new ArrayList<>();
+        if(authorityType == AuthorityType.ADMIN){
+            classes = classInfoRepository.findAllByDeletedIsFalse();
+            return AdminInfoResponse.convertAdminToAdminInfoResponse(admin, classes);
+        }
+        return AdminInfoResponse.convertAdminToAdminInfoResponse(admin, null);
     }
 
     public List<AdminInfoResponse> getAllAdminInfo(){
@@ -54,7 +71,7 @@ public class AdminService {
         List<AdminInfoResponse> adminResults = new ArrayList();
 
         for(Admin admin: admins){
-            adminResults.add(AdminInfoResponse.convertAdminToAdminInfoResponse(admin));
+            adminResults.add(AdminInfoResponse.convertAdminToAdminInfoResponse(admin, null));
         }
 
         return adminResults;

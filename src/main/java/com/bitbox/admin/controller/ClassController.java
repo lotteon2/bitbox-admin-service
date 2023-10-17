@@ -4,6 +4,7 @@ import com.bitbox.admin.domain.Classes;
 import com.bitbox.admin.dto.ClassDto;
 import com.bitbox.admin.dto.ClassUpdateDto;
 import com.bitbox.admin.service.ClassService;
+import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,4 +43,13 @@ public class ClassController {
     public ResponseEntity<List<Classes>> getClassInfoByClassId(@RequestParam(value = "classId") Long classId) {
         return ResponseEntity.ok(classService.getClassInfoByClassId(classId));
     }
+
+//    /**
+//     * adminId(memberId)를 통해 본인이 담당하고 있는 반 리스트 조회
+//     */
+//    @GetMapping("/myclass")
+//    public ResponseEntity<List<Classes>> getMyClassInfo(@Valid @RequestHeader String memberId, AuthorityType authorityType){
+//
+//    }
+
 }

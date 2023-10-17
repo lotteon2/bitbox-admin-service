@@ -30,7 +30,7 @@ public class Admin {
     private String adminId;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "admin")
+    @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY)
     private List<ClassAdmin> classAdmins;
 
     @Column(nullable = false)

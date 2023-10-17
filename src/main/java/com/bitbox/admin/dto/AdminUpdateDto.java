@@ -12,7 +12,7 @@ public class AdminUpdateDto {
     private String adminPassword;
     private Boolean isDeleted;
 
-    public static Admin convertAdminInfoForUpdate(Admin original, AdminUpdateDto update) {
+    public Admin convertAdminInfoForUpdate(Admin original, AdminUpdateDto update) {
         if(update.getAdminPassword() != null) original.setAdminPassword(update.getAdminPassword());
         if(update.getAdminProfileImg() != null) original.setAdminProfileImg(update.getAdminProfileImg());
         if(update.getAdminName() != null) original.setAdminName(update.getAdminName());

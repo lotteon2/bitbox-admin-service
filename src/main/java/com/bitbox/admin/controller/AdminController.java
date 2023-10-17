@@ -5,6 +5,7 @@ import com.bitbox.admin.dto.AdminDto;
 import com.bitbox.admin.dto.AdminUpdateDto;
 import com.bitbox.admin.service.AdminService;
 import com.bitbox.admin.service.response.AdminInfoResponse;
+import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +23,12 @@ public class AdminController {
     private final AdminService adminService;
 
     // Admin 추가 (+ 카프카 추가)
-    @PostMapping("")
-    public ResponseEntity<String> registerAdminInfo(@Valid @RequestBody AdminDto adminDto) {
+    @PostMapping("/{classId}")
+    public ResponseEntity<String> registerAdminInfo(@Valid @RequestBody AdminDto adminDto,
+                                                    @PathVariable("classId") Long classId) {
         System.out.println(adminDto);
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        return ResponseEntity.ok(adminService.registerAdminInfo(adminDto).getAdminId());
+        return ResponseEntity.ok(adminService.registerAdminInfo(adminDto, classId).getAdminId());
     }
 
     // 전체 관리자 정보 조회
@@ -37,8 +39,8 @@ public class AdminController {
 
     // 관리자 1명 정보 조회
     @GetMapping("/one")
-    public ResponseEntity<Admin> getAdminInfo(@Valid @RequestHeader String adminId){
-        return ResponseEntity.ok(adminService.getAdminInfo(adminId));
+    public ResponseEntity<AdminInfoResponse> getAdminInfo(@Valid @RequestHeader String adminId, AuthorityType authorityType){
+        return ResponseEntity.ok(adminService.getAdminInfo(adminId, authorityType));
     }
 
     // 관리자 정보 수정, 삭제 (이미지, 비밀번호, 이름)

@@ -44,11 +44,11 @@ public class ClassService {
     public List<Classes> getClassInfoByClassId(Long classId){
         if(classId == 0){
             // 전부 조회
-            return (List<Classes>) classInfoRepository.findAll();
+            return classInfoRepository.findAllByDeletedIsFalse();
         }
 
         // 단건 조회
-        return classInfoRepository.findByClassId(classId);
+        return classInfoRepository.findByClassIdAndDeletedIsFalse(classId);
     }
 
 }
