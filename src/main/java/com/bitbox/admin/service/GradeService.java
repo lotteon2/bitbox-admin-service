@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -38,14 +40,9 @@ public class GradeService {
         Classes classes = classInfoRepository.findById(gradesAddDto.getClassId()).orElseThrow(()-> new InvalidClassIdException("존재하지 않는 클래스 정보"));
         Exam exam = examInfoRepository.findById(gradesAddDto.getExamId()).orElseThrow(()->new InvalidExamIdException("존재하지 않는 시험 정보"));
 
+        Map<String, Long> gradeMap = gradesAddDto.getMembers().stream().collect(Collectors.toMap(MemberExamDto::getMemberId, MemberExamDto::getScore));
         for(MemberValidDto validMember: result.getValidMember()){
-            Long score = null;
-            for(MemberExamDto gradeAddDto : gradesAddDto.getMembers()){
-                if(gradeAddDto.getMemberId().equals(validMember.getMemberId())) {
-                    score = gradeAddDto.getScore();
-                    gradeInfoRepository.save(GradeDto.convertGradeDtoToGrade(validMember, exam, classes, score));
-                }
-            }
+            gradeInfoRepository.save(GradeDto.convertGradeDtoToGrade(validMember, exam, classes, gradeMap.get(validMember.getMemberId())));
         }
         return result;
     }
