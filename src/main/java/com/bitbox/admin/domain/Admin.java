@@ -38,7 +38,6 @@ public class Admin {
 
     // TODO : 암호화 추가
     @Column(nullable = false)
-    @ColumnDefault("1111")
     private String adminPassword;
 
     @Column(nullable = false)
