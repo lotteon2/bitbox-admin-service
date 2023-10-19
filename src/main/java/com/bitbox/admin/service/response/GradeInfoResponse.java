@@ -17,13 +17,16 @@ public class GradeInfoResponse {
     private Long perfectScore;
     private Long score;
     private Long gradeId;
+    private Double avgScore;
 
-    public static GradeInfoResponse convertGradeToGradeResponse(Grade grade){
+    public static GradeInfoResponse convertGradeToGradeResponse(Grade grade, Double avgScore){
         return GradeInfoResponse.builder()
                 .examId(grade.getExam().getExamId())
+                .gradeId(grade.getGradeId())
                 .examName(grade.getExam().getExamName())
                 .perfectScore(grade.getExam().getPerfectScore())
                 .score(grade.getScore())
+                .avgScore(avgScore)
                 .build();
     }
 }

@@ -2,13 +2,22 @@ package com.bitbox.admin.controller;
 
 import com.bitbox.admin.domain.Grade;
 import com.bitbox.admin.dto.GradeDto;
+import com.bitbox.admin.dto.GradesAddDto;
+import com.bitbox.admin.dto.MemberExamDto;
+import com.bitbox.admin.exception.InvalidAdminIdException;
+import com.bitbox.admin.feign.FeignServiceClient;
 import com.bitbox.admin.service.GradeService;
+import com.bitbox.admin.service.response.GradeByClassIdInfoResponse;
 import com.bitbox.admin.service.response.GradeInfoResponse;
+import io.github.bitbox.bitbox.dto.MemberTraineeResult;
+import io.github.bitbox.bitbox.dto.MemberValidDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,7 +26,7 @@ import java.util.List;
 @CrossOrigin("*")
 public class GradeController {
     private final GradeService gradeService;
-
+    private final FeignServiceClient feignServiceClient;
     /**
      *
      * @param gradeDto
@@ -27,17 +36,37 @@ public class GradeController {
     
     //TODO : 정윤이랑 유저검증 로직 추가
     @PostMapping("")
-    public ResponseEntity<Grade> registerGradeInfo(@Valid @RequestBody GradeDto gradeDto){
-        return ResponseEntity.ok(gradeService.registerGradeInfo(gradeDto));
+    public ResponseEntity<List<GradeByClassIdInfoResponse>> registerGradeInfo(@Valid @RequestBody GradesAddDto gradesAddDto){
+        List<MemberValidDto> memberValidDtoList = new ArrayList<>();
+        for (MemberExamDto memberExamDto : gradesAddDto.getMembers()){
+            memberValidDtoList.add(MemberValidDto.builder()
+                            .classId(gradesAddDto.getClassId())
+                            .memberId(memberExamDto.getMemberId())
+                            .build());
+        }
+        ResponseEntity<MemberTraineeResult> result = feignServiceClient.getMemberIsValidToAddExam(memberValidDtoList);
+        System.out.println("INVALID!!!!!!!!!");
+        System.out.println(result.getBody().getInvalidMember());
+        System.out.println("VALID!!!!!!!!!!!!");
+        System.out.println(result.getBody().getValidMember());
+
+        //        System.out.println(feignServiceClient.getMemberIsValidToAddExam(memberValidDtoList));
+        if(result.getBody().getInvalidMember().size() > 0){
+            throw new InvalidAdminIdException("유효하지않은 학생 Id입니다");
+        }
+        return ResponseEntity.ok(gradeService.getGradeInfosByClassId(gradesAddDto.getClassId()));
+//        return ResponseEntity.ok("good");
+//        return ResponseEntity.ok(gradeService.registerGradeInfo(gradeDto));
     }
 
     /**
      *
      * @param classId
      * @return List<Grade>
+     * 시험별 성적조회
      */
-    @GetMapping("/{classId}")
-    public ResponseEntity<List<Grade>> getGradeInfosByClassId(@PathVariable Long classId){
+    @GetMapping("/class/{classId}")
+    public ResponseEntity<List<GradeByClassIdInfoResponse>> getGradeInfosByClassId(@PathVariable Long classId){
         return ResponseEntity.ok(gradeService.getGradeInfosByClassId(classId));
     }
 
@@ -45,6 +74,8 @@ public class GradeController {
      *
      * @param memberId
      * @return
+     * 관리자용 학생별 성적조회
+     *
      */
     @GetMapping("/{memberId}")
     public ResponseEntity<List<GradeInfoResponse>> getGradesByMemberId(@PathVariable String memberId){

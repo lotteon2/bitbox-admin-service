@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Grade {
     @Id
     @GeneratedValue
@@ -29,6 +30,9 @@ public class Grade {
 
     @Column(nullable = false)
     private Long score;
+
+    @Column
+    private Long avgScore;
 
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean deleted;

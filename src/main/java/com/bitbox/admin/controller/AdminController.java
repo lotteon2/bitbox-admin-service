@@ -1,9 +1,11 @@
 package com.bitbox.admin.controller;
 
+import com.bitbox.admin.domain.Admin;
 import com.bitbox.admin.dto.AdminDto;
 import com.bitbox.admin.dto.AdminUpdateDto;
 import com.bitbox.admin.service.AdminService;
 import com.bitbox.admin.service.response.AdminInfoResponse;
+import io.github.bitbox.bitbox.dto.MemberAuthorityDto;
 import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,10 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    // Admin 추가 (+ 카프카 추가)
+    // Admin 추가 (카프카 완료)
     @PostMapping("/{classId}")
     public ResponseEntity<String> registerAdminInfo(@Valid @RequestBody AdminDto adminDto,
                                                     @PathVariable("classId") Long classId) {
-        System.out.println(adminDto);
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         return ResponseEntity.ok(adminService.registerAdminInfo(adminDto, classId).getAdminId());
     }
 
@@ -48,12 +48,11 @@ public class AdminController {
         return ResponseEntity.ok(adminService.updateAdminInfo(adminId, adminDto));
     }
 
-//    // 교육생 권한 수정 (+ 카프카 연동 OK)
-//    // TODO: 카프카
-//    @PutMapping("")
-//    public ResponseEntity<Admin> updateAdminRole(@Valid @RequestBody MemberAuthorityDto memberAuthorityDto){
-//        return ResponseEntity.ok(adminService.updateAdminRole(memberAuthorityDto));
-//    }
+    // 교육생 권한 수정 (+ 카프카 연동 OK)
+    @PutMapping("")
+    public ResponseEntity<Admin> updateAdminRole(@Valid @RequestBody MemberAuthorityDto memberAuthorityDto){
+        return ResponseEntity.ok(adminService.updateAdminRole(memberAuthorityDto));
+    }
 
     // 관리자 삭제
     @DeleteMapping("")

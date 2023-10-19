@@ -2,6 +2,7 @@ package com.bitbox.admin.controller;
 
 import com.bitbox.admin.dto.ExamDto;
 import com.bitbox.admin.dto.ExamUpdateDto;
+import com.bitbox.admin.feign.FeignServiceClient;
 import com.bitbox.admin.service.ExamService;
 import com.bitbox.admin.domain.Exam;
 import lombok.RequiredArgsConstructor;

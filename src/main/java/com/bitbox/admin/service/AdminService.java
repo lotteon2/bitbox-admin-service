@@ -13,6 +13,7 @@ import com.bitbox.admin.repository.ClassAdminInfoRepository;
 import com.bitbox.admin.repository.ClassInfoRepository;
 import com.bitbox.admin.service.response.AdminInfoResponse;
 import io.github.bitbox.bitbox.dto.MemberAuthorityDto;
+import io.github.bitbox.bitbox.dto.MemberRegisterDto;
 import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,10 +33,14 @@ public class AdminService {
     private final AdminInfoRepository adminInfoRepository;
     private final ClassInfoRepository classInfoRepository;
     private final ClassAdminInfoRepository classAdminInfoRepository;
+    private final KafkaTemplate<String, MemberRegisterDto> memberRegisterDtoKafkaTemplate;
     private final KafkaTemplate<String, MemberAuthorityDto> memberAuthorityDtoKafkaTemplate;
     private String INVALID_ADMIN_EXCEPTION = "존재하지 않는 관리자 정보";
     @Value("${memberAuthorityTopicName}")
     private String memberAuthorityTopicName;
+
+    @Value("${memberRegisterTopic}")
+    private String memberRegisterTopic;
 
     @Transactional
     public Admin registerAdminInfo(AdminDto adminDto, Long classId) {
@@ -49,10 +54,16 @@ public class AdminService {
         ClassAdmin classAdmin = new ClassAdmin(classAdminId, classes, admin);
         classAdminInfoRepository.save(classAdmin);
 
-//        memberAuthorityDtoKafkaTemplate.send(memberAuthorityTopicName, MemberAuthorityDto.builder()
-//                        .memberId(adminResult.getAdminId())
-//                        .memberAuthority(adminDto.getAdminAuthority())
-//                .build());
+        memberRegisterDtoKafkaTemplate.send(memberRegisterTopic, MemberRegisterDto.builder()
+                        .id(admin.getAdminId())
+                        .classId(classId)
+                        .authority(adminDto.getAdminAuthority())
+                        .profileImg("")
+                        .email(admin.getAdminEmail())
+                        .name(admin.getAdminName())
+                        .build());
+
+
         return admin;
     }
 

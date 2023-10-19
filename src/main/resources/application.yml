@@ -1,5 +1,5 @@
 server:
-  port: 9999
+  port: 0
 spring:
   kafka:
     producer:
@@ -39,4 +39,17 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+  feign:
+    client:
+      config:
+        feignClient: # Feign Client 명
+          decode404: false
+          loggerLevel: full
+          connect-timeout: 3000
+          readTimeout: 60000
+
+  external-api:
+    test:
+      authorization: 'eyJ0eXAiOiJBQ0NFU1MiLCJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJfaWQiOiI0NTRiYzZhMi00NmVkLTQ3OTYtOTAxZi1kYjY3ZjYxMzU0MmUiLCJtZW1iZXJfbmlja25hbWUiOiLsoITsooXrr7wiLCJjbGFzc19pZCI6bnVsbCwibWVtYmVyX2F1dGhvcml0eSI6IlRSQUlORUUiLCJleHAiOjE2OTg4NDA2ODl9.c5UL407Rt2nOb7LoesPJ6GbWk32QcbqFbGbOTf-QgjA'
 memberAuthorityTopicName: memberAuthorityModifyTopic
+memberRegisterTopic: memberRegisterTopic

@@ -10,6 +10,7 @@ import com.bitbox.admin.repository.AdminInfoRepository;
 import com.bitbox.admin.repository.ClassInfoRepository;
 import com.bitbox.admin.repository.ExamInfoRepository;
 import com.bitbox.admin.repository.GradeInfoRepository;
+import com.bitbox.admin.service.response.GradeByClassIdInfoResponse;
 import com.bitbox.admin.service.response.GradeInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +38,8 @@ public class GradeService {
     }
 
     @Transactional(readOnly = true)
-    public List<Grade> getGradeInfosByClassId(Long classId){
-            List<Grade> grades = gradeInfoRepository.findAllByClasses_ClassIdAndDeletedIsFalse(classId);
+    public List<GradeByClassIdInfoResponse> getGradeInfosByClassId(Long classId){
+            List<GradeByClassIdInfoResponse> grades = gradeInfoRepository.findAllByClasses_ClassIdAndDeletedIsFalse(classId);
             return grades;
     }
 
@@ -47,7 +48,8 @@ public class GradeService {
         List<Grade> grades = gradeInfoRepository.findAllByMemberIdAndDeletedIsFalse(memberId);
         List<GradeInfoResponse> gradeResults = new ArrayList<>();
         for(Grade grade: grades){
-            gradeResults.add(GradeInfoResponse.convertGradeToGradeResponse(grade));
+            Double avgScore = gradeInfoRepository.getAvgScoreByExamId(grade.getExam().getExamId());
+            gradeResults.add(GradeInfoResponse.convertGradeToGradeResponse(grade, avgScore));
         }
         return gradeResults;
     }
@@ -57,7 +59,8 @@ public class GradeService {
         List<Grade> grades = gradeInfoRepository.findAllByMemberIdAndDeletedIsFalse(memberId);
         List<GradeInfoResponse> gradeResults = new ArrayList<>();
         for(Grade grade: grades){
-            gradeResults.add(GradeInfoResponse.convertGradeToGradeResponse(grade));
+            Double avgScore = gradeInfoRepository.getAvgScoreByExamId(grade.getExam().getExamId());
+            gradeResults.add(GradeInfoResponse.convertGradeToGradeResponse(grade, avgScore));
         }
         return gradeResults;
     }
