@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "feignClient",
-        url = "localhost:8000")
+@FeignClient(name = "user-service")
 public interface FeignServiceClient {
-    @PostMapping(value="/user-service/member/admin/check")
+    @PostMapping(value="/member/admin/check")
     ResponseEntity<MemberTraineeResult> getMemberIsValidToAddExam(@RequestBody List<MemberValidDto> memberValidDto);
 
 }
