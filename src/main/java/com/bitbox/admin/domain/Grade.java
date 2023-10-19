@@ -25,7 +25,7 @@ public class Grade {
     @JoinColumn(name = "exam_id")
     private Exam exam;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(300)")
     private String memberId;
 
     @Column(nullable = false)

@@ -33,10 +33,9 @@ public class GradeController {
      * @return Grade
      * 시험,학생,반정보를 받아서 점수를 등록
      */
-    
-    //TODO : 정윤이랑 유저검증 로직 추가
+
     @PostMapping("")
-    public ResponseEntity<List<GradeByClassIdInfoResponse>> registerGradeInfo(@Valid @RequestBody GradesAddDto gradesAddDto){
+    public ResponseEntity<MemberTraineeResult> registerGradeInfo(@Valid @RequestBody GradesAddDto gradesAddDto){
         List<MemberValidDto> memberValidDtoList = new ArrayList<>();
         for (MemberExamDto memberExamDto : gradesAddDto.getMembers()){
             memberValidDtoList.add(MemberValidDto.builder()
@@ -45,18 +44,7 @@ public class GradeController {
                             .build());
         }
         ResponseEntity<MemberTraineeResult> result = feignServiceClient.getMemberIsValidToAddExam(memberValidDtoList);
-        System.out.println("INVALID!!!!!!!!!");
-        System.out.println(result.getBody().getInvalidMember());
-        System.out.println("VALID!!!!!!!!!!!!");
-        System.out.println(result.getBody().getValidMember());
-
-        //        System.out.println(feignServiceClient.getMemberIsValidToAddExam(memberValidDtoList));
-        if(result.getBody().getInvalidMember().size() > 0){
-            throw new InvalidAdminIdException("유효하지않은 학생 Id입니다");
-        }
-        return ResponseEntity.ok(gradeService.getGradeInfosByClassId(gradesAddDto.getClassId()));
-//        return ResponseEntity.ok("good");
-//        return ResponseEntity.ok(gradeService.registerGradeInfo(gradeDto));
+        return ResponseEntity.ok(gradeService.registerGradeInfo(result.getBody(), gradesAddDto));
     }
 
     /**

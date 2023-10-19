@@ -3,6 +3,7 @@ package com.bitbox.admin.dto;
 import com.bitbox.admin.domain.Classes;
 import com.bitbox.admin.domain.Exam;
 import com.bitbox.admin.domain.Grade;
+import io.github.bitbox.bitbox.dto.MemberValidDto;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,12 +18,13 @@ public class GradeDto {
     private String memberId;
     private Long score;
 
-    public static Grade convertGradeDtoToGrade(GradeDto gradeDto, Exam exam, Classes classes){
+    public static Grade convertGradeDtoToGrade(MemberValidDto memberValidDto, Exam exam, Classes classes, Long score){
         return Grade.builder()
                 .exam(exam)
-                .memberId(gradeDto.getMemberId())
+                .memberId(memberValidDto.getMemberId())
                 .classes(classes)
-                .score(gradeDto.getScore())
+                .score(score)
                 .build();
     }
+
 }
