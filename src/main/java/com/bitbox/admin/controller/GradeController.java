@@ -1,10 +1,7 @@
 package com.bitbox.admin.controller;
 
-import com.bitbox.admin.domain.Grade;
-import com.bitbox.admin.dto.GradeDto;
 import com.bitbox.admin.dto.GradesAddDto;
 import com.bitbox.admin.dto.MemberExamDto;
-import com.bitbox.admin.exception.InvalidAdminIdException;
 import com.bitbox.admin.feign.FeignServiceClient;
 import com.bitbox.admin.service.GradeService;
 import com.bitbox.admin.service.response.GradeByClassIdInfoResponse;
@@ -12,7 +9,6 @@ import com.bitbox.admin.service.response.GradeInfoResponse;
 import io.github.bitbox.bitbox.dto.MemberTraineeResult;
 import io.github.bitbox.bitbox.dto.MemberValidDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +19,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/grade")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class GradeController {
     private final GradeService gradeService;
     private final FeignServiceClient feignServiceClient;

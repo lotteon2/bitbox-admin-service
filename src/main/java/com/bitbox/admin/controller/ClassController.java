@@ -4,7 +4,6 @@ import com.bitbox.admin.domain.Classes;
 import com.bitbox.admin.dto.ClassDto;
 import com.bitbox.admin.dto.ClassUpdateDto;
 import com.bitbox.admin.service.ClassService;
-import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/class")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class ClassController {
     private final ClassService classService;
 

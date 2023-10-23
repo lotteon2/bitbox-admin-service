@@ -69,7 +69,7 @@ public class AdminService {
 
     public AdminInfoResponse getAdminInfo(String adminId, AuthorityType authorityType) {
         Admin admin = adminInfoRepository.findById(adminId).orElseThrow(() -> new InvalidAdminIdException(INVALID_ADMIN_EXCEPTION));
-        List<Classes> classes = new ArrayList<>();
+        List<Classes> classes;
         if(authorityType == AuthorityType.ADMIN){
             classes = classInfoRepository.findAllByDeletedIsFalse();
             return AdminInfoResponse.convertAdminToAdminInfoResponse(admin, classes);
