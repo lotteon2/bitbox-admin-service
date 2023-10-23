@@ -39,7 +39,7 @@ public class ExamService {
 
     public List<Exam> getExamInfoByClassId(Long classId){
         Classes classes = classInfoRepository.findById(classId).orElseThrow(() -> new InvalidClassIdException("존재하지 않는 클래스 아이디입니다."));
-        return examInfoRepository.findExamByClasses_ClassIdAndDeletedIsFalse(classes.getClassId());
+        return examInfoRepository.findExamByClasses_ClassIdAndDeletedIsFalse(classId);
     }
     @Transactional
     public boolean updateExamInfo(Long examId, ExamUpdateDto examUpdateDto){

@@ -30,9 +30,9 @@ public class AdminController {
     }
 
     // 전체 관리자 정보 조회
-    @GetMapping("")
-    public ResponseEntity<List<AdminInfoResponse>> getAllAdminInfo(){
-        return ResponseEntity.ok(adminService.getAllAdminInfo());
+    @GetMapping("/{classId}")
+    public ResponseEntity<List<AdminInfoResponse>> getAllAdminInfoByClassId(@Valid @PathVariable("classId") Long classId){
+        return ResponseEntity.ok(adminService.getAllAdminInfo(classId));
     }
 
     // 관리자 1명 정보 조회

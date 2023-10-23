@@ -77,8 +77,8 @@ public class AdminService {
         return AdminInfoResponse.convertAdminToAdminInfoResponse(admin, null);
     }
 
-    public List<AdminInfoResponse> getAllAdminInfo(){
-        List<Admin> admins = adminInfoRepository.findAllByDeletedIsFalse();
+    public List<AdminInfoResponse> getAllAdminInfo(Long classId){
+        List<Admin> admins = adminInfoRepository.findAllByDeletedIsFalseAndClassId(classId);
         List<AdminInfoResponse> adminResults = new ArrayList();
 
         for(Admin admin: admins){
