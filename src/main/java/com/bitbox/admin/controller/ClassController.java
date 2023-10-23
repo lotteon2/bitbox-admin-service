@@ -40,7 +40,6 @@ public class ClassController {
      */
     @GetMapping("")
     public ResponseEntity<List<ClassInfoWithAdminList>> getAllClassInfo() {
-        System.out.println("찍");
         return ResponseEntity.ok(classService.getAllClassInfo());
     }
 
