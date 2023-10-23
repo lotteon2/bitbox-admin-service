@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @FeignClient(name = "feignClient",
-        url = "https://bitbox.kro.kr/")
+        url = "localhost:8000")
 public interface FeignServiceClient {
     @PostMapping(value="/user-service/member/admin/check")
     ResponseEntity<MemberTraineeResult> getMemberIsValidToAddExam(@RequestBody List<MemberValidDto> memberValidDto);
