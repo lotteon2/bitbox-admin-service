@@ -43,8 +43,8 @@ public class AdminController {
     }
 
     // 관리자 정보 수정, 삭제 (이미지, 비밀번호, 이름)
-    @PatchMapping("")
-    public ResponseEntity<Boolean> updateAdminInfo(@RequestHeader String adminId, @Valid @RequestBody AdminUpdateDto adminDto){
+    @PatchMapping("/{adminId}")
+    public ResponseEntity<Boolean> updateAdminInfo(@PathVariable String adminId, @Valid @RequestBody AdminUpdateDto adminDto){
         return ResponseEntity.ok(adminService.updateAdminInfo(adminId, adminDto));
     }
 

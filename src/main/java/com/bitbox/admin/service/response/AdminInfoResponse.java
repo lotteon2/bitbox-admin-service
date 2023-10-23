@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminInfoResponse {
+    private String adminId;
     private String adminName;
     private String adminEmail;
     private String adminProfileImg;
@@ -40,6 +41,7 @@ public class AdminInfoResponse {
                     .adminEmail(adminInfo.getAdminEmail())
                     .adminProfileImg(adminInfo.getAdminProfileImg())
                     .adminAuthority(adminInfo.getAdminAuthority())
+                    .adminId(adminInfo.getAdminId())
                     .classInfoResponses(!result.isEmpty() ? result:adminInfo.getClassAdmins().stream().map(classAdmin ->
                             ClassInfoResponse.ClassInfoResponse(classAdmin.getClasses())).collect(Collectors.toList())).build();
     }
