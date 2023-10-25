@@ -2,6 +2,7 @@ package com.bitbox.admin.service;
 
 import com.bitbox.admin.domain.Classes;
 import com.bitbox.admin.dto.ClassDto;
+import com.bitbox.admin.dto.ClassInfoWithAdminList;
 import com.bitbox.admin.dto.ClassUpdateDto;
 import com.bitbox.admin.exception.DuplicationException;
 import com.bitbox.admin.exception.InvalidClassIdException;
@@ -11,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.Null;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,14 +40,10 @@ public class ClassService {
         return true;
     }
 
-    public List<Classes> getClassInfoByClassId(Long classId){
-        if(classId == 0){
-            // 전부 조회
-            return classInfoRepository.findAllByDeletedIsFalse();
-        }
-
-        // 단건 조회
-        return classInfoRepository.findByClassIdAndDeletedIsFalse(classId);
+    public List<ClassInfoWithAdminList> getAllClassInfo(){
+        List<ClassInfoWithAdminList> allClassInfoWithAdminList = classInfoRepository.findAllClassInfoWithAdminList();
+        System.out.println(allClassInfoWithAdminList);
+        return allClassInfoWithAdminList;
     }
 
 }

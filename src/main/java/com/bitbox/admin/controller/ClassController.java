@@ -2,9 +2,9 @@ package com.bitbox.admin.controller;
 
 import com.bitbox.admin.domain.Classes;
 import com.bitbox.admin.dto.ClassDto;
+import com.bitbox.admin.dto.ClassInfoWithAdminList;
 import com.bitbox.admin.dto.ClassUpdateDto;
 import com.bitbox.admin.service.ClassService;
-import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/class")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class ClassController {
     private final ClassService classService;
 
@@ -37,11 +36,11 @@ public class ClassController {
     }
 
     /**
-        클래스ID에 해당하는 클래스 받아오기 (classId 0번이면 전체 조회)
+        class 전체 조회
      */
     @GetMapping("")
-    public ResponseEntity<List<Classes>> getClassInfoByClassId(@RequestParam(value = "classId") Long classId) {
-        return ResponseEntity.ok(classService.getClassInfoByClassId(classId));
+    public ResponseEntity<List<ClassInfoWithAdminList>> getAllClassInfo() {
+        return ResponseEntity.ok(classService.getAllClassInfo());
     }
 
 //    /**

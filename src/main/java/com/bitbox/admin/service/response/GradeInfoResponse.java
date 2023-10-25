@@ -1,9 +1,6 @@
 package com.bitbox.admin.service.response;
 
-import com.bitbox.admin.domain.Classes;
-import com.bitbox.admin.domain.Exam;
 import com.bitbox.admin.domain.Grade;
-import com.bitbox.admin.dto.GradeDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -10,6 +10,7 @@ import com.bitbox.admin.dto.ExamUpdateDto;
 import com.bitbox.admin.exception.DuplicationException;
 import com.bitbox.admin.exception.InvalidAdminIdException;
 import com.bitbox.admin.repository.ClassInfoRepository;
+import com.bitbox.admin.service.response.ExamInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,9 +38,9 @@ public class ExamService {
         return examResult.getExamId();
     }
 
-    public List<Exam> getExamInfoByClassId(Long classId){
+    public List<ExamInfoResponse> getExamInfoByClassId(Long classId){
         Classes classes = classInfoRepository.findById(classId).orElseThrow(() -> new InvalidClassIdException("존재하지 않는 클래스 아이디입니다."));
-        return examInfoRepository.findExamByClasses_ClassIdAndDeletedIsFalse(classes.getClassId());
+        return examInfoRepository.findExamByClasses_ClassIdAndDeletedIsFalse(classId);
     }
     @Transactional
     public boolean updateExamInfo(Long examId, ExamUpdateDto examUpdateDto){

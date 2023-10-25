@@ -69,7 +69,7 @@ public class AdminService {
 
     public AdminInfoResponse getAdminInfo(String adminId, AuthorityType authorityType) {
         Admin admin = adminInfoRepository.findById(adminId).orElseThrow(() -> new InvalidAdminIdException(INVALID_ADMIN_EXCEPTION));
-        List<Classes> classes = new ArrayList<>();
+        List<Classes> classes;
         if(authorityType == AuthorityType.ADMIN){
             classes = classInfoRepository.findAllByDeletedIsFalse();
             return AdminInfoResponse.convertAdminToAdminInfoResponse(admin, classes);
@@ -77,8 +77,8 @@ public class AdminService {
         return AdminInfoResponse.convertAdminToAdminInfoResponse(admin, null);
     }
 
-    public List<AdminInfoResponse> getAllAdminInfo(){
-        List<Admin> admins = adminInfoRepository.findAllByDeletedIsFalse();
+    public List<AdminInfoResponse> getAllAdminInfo(Long classId){
+        List<Admin> admins = adminInfoRepository.findAllByDeletedIsFalseAndClassId(classId);
         List<AdminInfoResponse> adminResults = new ArrayList();
 
         for(Admin admin: admins){

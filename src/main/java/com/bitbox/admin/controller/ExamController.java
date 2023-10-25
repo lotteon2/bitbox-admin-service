@@ -2,9 +2,9 @@ package com.bitbox.admin.controller;
 
 import com.bitbox.admin.dto.ExamDto;
 import com.bitbox.admin.dto.ExamUpdateDto;
-import com.bitbox.admin.feign.FeignServiceClient;
 import com.bitbox.admin.service.ExamService;
 import com.bitbox.admin.domain.Exam;
+import com.bitbox.admin.service.response.ExamInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/exam")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class ExamController {
 
     private final ExamService examService;
@@ -28,7 +27,7 @@ public class ExamController {
 
     // 특정 반 시험 조회
     @GetMapping("/{classId}")
-    public ResponseEntity<List<Exam>> getExamInfoByClassId(@PathVariable Long classId) {
+    public ResponseEntity<List<ExamInfoResponse>> getExamInfoByClassId(@PathVariable Long classId) {
         return ResponseEntity.ok(examService.getExamInfoByClassId(classId));
     }
 
