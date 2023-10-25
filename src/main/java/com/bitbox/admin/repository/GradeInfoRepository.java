@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface GradeInfoRepository extends CrudRepository<Grade, Long> {
 
-    @Query(value = "SELECT new com.bitbox.admin.service.response.GradeByClassIdInfoResponse(avg(g.score), g.exam.perfectScore, g.classes.classId, e.examName) FROM Grade g INNER JOIN Exam e ON g.exam.examId = e.examId WHERE g.classes.classId = :classId AND g.exam.deleted = false  GROUP BY g.exam.examId")
+    @Query(value = "SELECT new com.bitbox.admin.service.response.GradeByClassIdInfoResponse(g.score, g.exam.perfectScore, g.classes.classId, e.examName, g.memberId) FROM Grade g INNER JOIN Exam e ON g.exam.examId = e.examId WHERE g.classes.classId = :classId AND g.exam.deleted = false")
     List<GradeByClassIdInfoResponse> findAllByClasses_ClassIdAndDeletedIsFalse(Long classId);
     List<Grade> findAllByMemberIdAndDeletedIsFalse(String memberId);
 

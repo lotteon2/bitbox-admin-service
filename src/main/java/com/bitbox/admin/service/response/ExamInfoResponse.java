@@ -16,4 +16,5 @@ public class ExamInfoResponse {
     private String className;
     private Long perfectScore;
     private Double avg;
+
 }

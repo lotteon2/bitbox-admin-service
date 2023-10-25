@@ -33,7 +33,7 @@ public class ExamController {
 
     // 시험 수정 및 삭제
     @PatchMapping("/{examId}")
-    public ResponseEntity<Boolean> updateExamInfo(@PathVariable Long examId, @Valid @RequestBody ExamUpdateDto examUpdateDto){
+    public ResponseEntity<Boolean> updateExamInfo(@PathVariable Long examId, @RequestBody ExamUpdateDto examUpdateDto){
         return ResponseEntity.ok(examService.updateExamInfo(examId, examUpdateDto));
     }
 }
