@@ -2,11 +2,9 @@ package com.bitbox.admin.domain.admin.service;
 
 import com.bitbox.admin.domain.Admin;
 import com.bitbox.admin.dto.AdminDto;
-import com.bitbox.admin.exception.DuplicationException;
 import com.bitbox.admin.exception.InvalidAdminIdException;
 import com.bitbox.admin.service.AdminService;
 import io.github.bitbox.bitbox.enums.AuthorityType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

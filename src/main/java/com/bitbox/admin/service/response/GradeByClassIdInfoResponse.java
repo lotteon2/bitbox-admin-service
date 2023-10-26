@@ -8,8 +8,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class GradeByClassIdInfoResponse {
+    private Long gradeId;
     private Double avgScore;
     private Long perfectScore;
     private Long classId;
     private String examName;
+    private String memberId;
 }
