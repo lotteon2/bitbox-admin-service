@@ -7,11 +7,10 @@ import lombok.Getter;
 @Builder
 @Getter
 @AllArgsConstructor
-public class GradeByClassIdInfoResponse {
-    private Long gradeId;
-    private Double avgScore;
-    private Long perfectScore;
-    private Long classId;
-    private String examName;
+public class GradeByExamIdInfoResponse {
+    private Long GradeId;
     private String memberId;
+    private String examName;
+    private Long examId;
+    private Long perfectScore;
 }

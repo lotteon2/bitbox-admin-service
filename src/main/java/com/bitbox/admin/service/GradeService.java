@@ -13,6 +13,7 @@ import com.bitbox.admin.repository.ClassInfoRepository;
 import com.bitbox.admin.repository.ExamInfoRepository;
 import com.bitbox.admin.repository.GradeInfoRepository;
 import com.bitbox.admin.service.response.GradeByClassIdInfoResponse;
+import com.bitbox.admin.service.response.GradeByExamIdInfoResponse;
 import com.bitbox.admin.service.response.GradeInfoResponse;
 import io.github.bitbox.bitbox.dto.MemberTraineeResult;
 import io.github.bitbox.bitbox.dto.MemberValidDto;
@@ -51,6 +52,12 @@ public class GradeService {
     public List<GradeByClassIdInfoResponse> getGradeInfosByClassId(Long classId){
             List<GradeByClassIdInfoResponse> grades = gradeInfoRepository.findAllByClasses_ClassIdAndDeletedIsFalse(classId);
             return grades;
+    }
+
+    @Transactional(readOnly = true)
+    public List<GradeByExamIdInfoResponse> getGradeInfosByExamId(Long examId){
+        List<GradeByExamIdInfoResponse> grades = gradeInfoRepository.findAllByExam_ExamIdAndDeletedIsFalse(examId);
+        return grades;
     }
 
     @Transactional(readOnly = true)

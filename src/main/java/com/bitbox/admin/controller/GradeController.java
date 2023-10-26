@@ -5,6 +5,7 @@ import com.bitbox.admin.dto.MemberExamDto;
 import com.bitbox.admin.feign.FeignServiceClient;
 import com.bitbox.admin.service.GradeService;
 import com.bitbox.admin.service.response.GradeByClassIdInfoResponse;
+import com.bitbox.admin.service.response.GradeByExamIdInfoResponse;
 import com.bitbox.admin.service.response.GradeInfoResponse;
 import io.github.bitbox.bitbox.dto.MemberTraineeResult;
 import io.github.bitbox.bitbox.dto.MemberValidDto;
@@ -51,6 +52,11 @@ public class GradeController {
     @GetMapping("/class/{classId}")
     public ResponseEntity<List<GradeByClassIdInfoResponse>> getGradeInfosByClassId(@PathVariable Long classId){
         return ResponseEntity.ok(gradeService.getGradeInfosByClassId(classId));
+    }
+
+    @GetMapping("/exam/{examId}")
+    public ResponseEntity<List<GradeByExamIdInfoResponse>> getGradeInfosByExamId(@PathVariable Long examId){
+        return ResponseEntity.ok(gradeService.getGradeInfosByExamId(examId));
     }
 
     /**
