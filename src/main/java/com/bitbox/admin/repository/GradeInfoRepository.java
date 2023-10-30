@@ -14,10 +14,11 @@ public interface GradeInfoRepository extends CrudRepository<Grade, Long> {
     List<GradeByClassIdInfoResponse> findAllByClasses_ClassIdAndDeletedIsFalse(Long classId);
     @Query(value = "SELECT new com.bitbox.admin.service.response.GradeByExamIdInfoResponse(g.gradeId, g.memberInfo.memberId, e.examName, e.examId, e.perfectScore) FROM Grade g INNER JOIN Exam e ON g.exam.examId = e.examId WHERE e.examId = :examId AND e.deleted = false")
     List<GradeByExamIdInfoResponse> findAllByExam_ExamIdAndDeletedIsFalse(Long examId);
-    //List<Grade> findAllByMemberIdAndDeletedIsFalse(String memberId);
     List<Grade> findAllByMemberInfo_MemberIdAndDeletedIsFalse(String memberId);
 
 
     @Query(value = "SELECT avg(g.score) FROM Grade g WHERE g.exam.examId = :examId GROUP BY g.exam.examId")
     Double getAvgScoreByExamId(Long examId);
+
+
 }

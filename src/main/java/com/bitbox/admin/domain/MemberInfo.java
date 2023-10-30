@@ -2,6 +2,7 @@ package com.bitbox.admin.domain;
 
 import io.github.bitbox.bitbox.enums.AuthorityType;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="member_info")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class MemberInfo {
     @Id
     @Column(nullable = false)
