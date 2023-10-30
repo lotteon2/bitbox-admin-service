@@ -25,5 +25,5 @@ public class MemberInfo {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "class_id")
-    private Classes classId;
+    private Classes classes;
 }

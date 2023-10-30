@@ -45,7 +45,7 @@ public class ExamService {
 
         List<Grade> gradeList = new ArrayList<>();
 
-        List<MemberInfo> memberIdByClassId = memberInfoRepository.findMemberIdByClassId(examResult.getClasses().getClassId());
+        List<MemberInfo> memberIdByClassId = memberInfoRepository.findByClasses_ClassId(examResult.getClasses().getClassId());
         for(MemberInfo memberInfo : memberIdByClassId){
             gradeList.add(Grade.builder()
                     .classes(classes)

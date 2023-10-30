@@ -7,5 +7,5 @@ import java.util.List;
 
 
 public interface MemberInfoRepository extends CrudRepository<MemberInfo, String> {
-    List<MemberInfo> findMemberIdByClassId(Long classId);
+    List<MemberInfo> findByClasses_ClassId(Long classId);
 }
