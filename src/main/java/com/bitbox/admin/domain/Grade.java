@@ -25,9 +25,6 @@ public class Grade {
     @JoinColumn(name = "exam_id")
     private Exam exam;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(300)")
-    private String memberId;
-
     @Column(nullable = false)
     private Long score;
 
@@ -36,4 +33,8 @@ public class Grade {
 
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean deleted;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private MemberInfo memberInfo;
 }

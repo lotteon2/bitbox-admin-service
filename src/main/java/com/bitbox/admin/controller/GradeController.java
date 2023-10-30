@@ -1,20 +1,14 @@
 package com.bitbox.admin.controller;
 
-import com.bitbox.admin.dto.GradesAddDto;
-import com.bitbox.admin.dto.MemberExamDto;
 import com.bitbox.admin.feign.FeignServiceClient;
 import com.bitbox.admin.service.GradeService;
 import com.bitbox.admin.service.response.GradeByClassIdInfoResponse;
 import com.bitbox.admin.service.response.GradeByExamIdInfoResponse;
 import com.bitbox.admin.service.response.GradeInfoResponse;
-import io.github.bitbox.bitbox.dto.MemberTraineeResult;
-import io.github.bitbox.bitbox.dto.MemberValidDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,7 +24,7 @@ public class GradeController {
      * 시험,학생,반정보를 받아서 점수를 등록
      */
 
-    @PostMapping("")
+/*    @PostMapping("")
     public ResponseEntity<MemberTraineeResult> registerGradeInfo(@Valid @RequestBody GradesAddDto gradesAddDto){
         List<MemberValidDto> memberValidDtoList = new ArrayList<>();
         for (MemberExamDto memberExamDto : gradesAddDto.getMembers()){
@@ -41,7 +35,7 @@ public class GradeController {
         }
         ResponseEntity<MemberTraineeResult> result = feignServiceClient.getMemberIsValidToAddExam(memberValidDtoList);
         return ResponseEntity.ok(gradeService.registerGradeInfo(result.getBody(), gradesAddDto));
-    }
+    }*/
 
     /**
      *
