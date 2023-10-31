@@ -22,8 +22,8 @@ public class ClassController {
      * 반 추가(반 이름, 반 코드)
      */
     @PostMapping("")
-    public ResponseEntity<Long> registerClassInfo(@Valid @RequestBody ClassDto classDto){
-        return ResponseEntity.ok(classService.registerClassInfo(classDto));
+    public ResponseEntity<Long> registerClassInfo(@RequestHeader String memberId, @Valid @RequestBody ClassDto classDto){
+        return ResponseEntity.ok(classService.registerClassInfo(memberId, classDto));
     }
 
     /**

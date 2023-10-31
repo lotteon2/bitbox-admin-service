@@ -23,7 +23,7 @@ public class GradeController {
      *
      * @param GradeUpdateDto
      * @return void
-     * 시험 아이디 받아서 학생의 점수를 수정
+     * 성적 아이디 받아서 학생의 점수를 수정
      */
     @PatchMapping("/{gradeId}")
     public ResponseEntity<Void> updateExamByExamId(@PathVariable long gradeId, @RequestBody GradeUpdateDto gradeUpdateDto){
