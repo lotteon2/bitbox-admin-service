@@ -1,13 +1,7 @@
 package com.bitbox.admin.service;
 
-import com.bitbox.admin.domain.Classes;
-import com.bitbox.admin.domain.Exam;
 import com.bitbox.admin.domain.Grade;
-import com.bitbox.admin.dto.GradeDto;
-import com.bitbox.admin.dto.GradesAddDto;
-import com.bitbox.admin.dto.MemberExamDto;
-import com.bitbox.admin.exception.InvalidClassIdException;
-import com.bitbox.admin.exception.InvalidExamIdException;
+import com.bitbox.admin.dto.GradeUpdateDto;
 import com.bitbox.admin.repository.AdminInfoRepository;
 import com.bitbox.admin.repository.ClassInfoRepository;
 import com.bitbox.admin.repository.ExamInfoRepository;
@@ -15,8 +9,6 @@ import com.bitbox.admin.repository.GradeInfoRepository;
 import com.bitbox.admin.service.response.GradeByClassIdInfoResponse;
 import com.bitbox.admin.service.response.GradeByExamIdInfoResponse;
 import com.bitbox.admin.service.response.GradeInfoResponse;
-import io.github.bitbox.bitbox.dto.MemberTraineeResult;
-import io.github.bitbox.bitbox.dto.MemberValidDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,10 +38,16 @@ public class GradeService {
 //        return result;
 //    }
 
+    @Transactional
+    public void updateGradeByGradeId(long gradeId, GradeUpdateDto gradeUpdateDto){
+        Grade grade = gradeInfoRepository.findById(gradeId).orElseThrow(() -> new RuntimeException("존재하지 않는 시험번호 입니다."));
+        grade.setScore(gradeUpdateDto.getScore());
+    }
+
     @Transactional(readOnly = true)
     public List<GradeByClassIdInfoResponse> getGradeInfosByClassId(Long classId){
-            List<GradeByClassIdInfoResponse> grades = gradeInfoRepository.findAllByClasses_ClassIdAndDeletedIsFalse(classId);
-            return grades;
+        List<GradeByClassIdInfoResponse> grades = gradeInfoRepository.findAllByClasses_ClassIdAndDeletedIsFalse(classId);
+        return grades;
     }
 
     @Transactional(readOnly = true)

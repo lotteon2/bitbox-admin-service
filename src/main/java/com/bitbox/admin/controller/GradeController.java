@@ -1,5 +1,6 @@
 package com.bitbox.admin.controller;
 
+import com.bitbox.admin.dto.GradeUpdateDto;
 import com.bitbox.admin.feign.FeignServiceClient;
 import com.bitbox.admin.service.GradeService;
 import com.bitbox.admin.service.response.GradeByClassIdInfoResponse;
@@ -17,25 +18,18 @@ import java.util.List;
 public class GradeController {
     private final GradeService gradeService;
     private final FeignServiceClient feignServiceClient;
+
     /**
      *
-     * @param gradeDto
-     * @return Grade
-     * 시험,학생,반정보를 받아서 점수를 등록
+     * @param GradeUpdateDto
+     * @return void
+     * 시험 아이디 받아서 학생의 점수를 수정
      */
-
-/*    @PostMapping("")
-    public ResponseEntity<MemberTraineeResult> registerGradeInfo(@Valid @RequestBody GradesAddDto gradesAddDto){
-        List<MemberValidDto> memberValidDtoList = new ArrayList<>();
-        for (MemberExamDto memberExamDto : gradesAddDto.getMembers()){
-            memberValidDtoList.add(MemberValidDto.builder()
-                            .classId(gradesAddDto.getClassId())
-                            .memberId(memberExamDto.getMemberId())
-                            .build());
-        }
-        ResponseEntity<MemberTraineeResult> result = feignServiceClient.getMemberIsValidToAddExam(memberValidDtoList);
-        return ResponseEntity.ok(gradeService.registerGradeInfo(result.getBody(), gradesAddDto));
-    }*/
+    @PatchMapping("/{gradeId}")
+    public ResponseEntity<Void> updateExamByExamId(@PathVariable long gradeId, @RequestBody GradeUpdateDto gradeUpdateDto){
+        gradeService.updateGradeByGradeId(gradeId, gradeUpdateDto);
+        return ResponseEntity.ok().build();
+    }
 
     /**
      *
