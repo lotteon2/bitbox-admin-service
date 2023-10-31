@@ -18,13 +18,13 @@ public class GradeDto {
     private String memberId;
     private Long score;
 
-    public static Grade convertGradeDtoToGrade(MemberValidDto memberValidDto, Exam exam, Classes classes, Long score){
-        return Grade.builder()
-                .exam(exam)
-                .memberId(memberValidDto.getMemberId())
-                .classes(classes)
-                .score(score)
-                .build();
-    }
+//    public static Grade convertGradeDtoToGrade(MemberValidDto memberValidDto, Exam exam, Classes classes, Long score){
+//        return Grade.builder()
+//                .exam(exam)
+//                .memberId(memberValidDto.getMemberId())
+//                .classes(classes)
+//                .score(score)
+//                .build();
+//    }
 
 }

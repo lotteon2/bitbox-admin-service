@@ -10,6 +10,7 @@ import lombok.Getter;
 public class GradeByExamIdInfoResponse {
     private Long GradeId;
     private String memberId;
+    private String memberName;
     private String examName;
     private Long examId;
     private Long perfectScore;
