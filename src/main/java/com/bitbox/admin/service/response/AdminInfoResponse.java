@@ -28,6 +28,7 @@ public class AdminInfoResponse {
         List<ClassInfoResponse> result = new ArrayList<>();
         if (classes != null) {
             result = classes.stream()
+                    .filter(classes1 -> !classes1.isDeleted())
                     .map(data -> ClassInfoResponse.builder()
                             .className(data.getClassName())
                             .classId(data.getClassId())
@@ -46,7 +47,7 @@ public class AdminInfoResponse {
                 .adminProfileImg(adminInfo.getAdminProfileImg())
                 .adminAuthority(adminInfo.getAdminAuthority())
                 .adminId(adminInfo.getAdminId())
-                .classInfoResponses(!result.isEmpty() ? result : adminInfo.getClassAdmins().stream().map(classAdmin ->
+                .classInfoResponses(!result.isEmpty() ? result : adminInfo.getClassAdmins().stream().filter(admin-> !admin.getClasses().isDeleted()).map(classAdmin ->
                         ClassInfoResponse.ClassInfoResponse(classAdmin.getClasses())).collect(Collectors.toList())).build();
     }
 }
