@@ -32,6 +32,9 @@ public class AdminInfoResponse {
                             .className(data.getClassName())
                             .classId(data.getClassId())
                             .classCode(data.getClassCode())
+                            .exams(  data.getExams().stream()
+                                    .map(ExamResponseByClassId::from)
+                                    .collect(Collectors.toList()))
                             .build())
                     .collect(Collectors.toList());
         }
