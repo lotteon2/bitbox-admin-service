@@ -60,8 +60,8 @@ public class ClassService {
     @Transactional
     public Boolean updateClassInfo(Long classId, ClassUpdateDto classUpdateDto){
         Classes classes = classInfoRepository.findById(classId).orElseThrow(()->new InvalidClassIdException("해당 클래스 아이디가 존재하지 않습니다."));
-        classUpdateDto.covertClassInfoForUpdate(classes, classUpdateDto);
-        if(classUpdateDto.getIsDeleted()) {
+        Classes updatedClasses =  classUpdateDto.covertClassInfoForUpdate(classes, classUpdateDto);
+        if(updatedClasses.isDeleted()) {
             kafkaTemplate2.send("adminMemberBoardTopic", AdminMemberBoardDto.builder().classId(classId).requestDate(LocalDateTime.now()).build());
         }
         return true;
