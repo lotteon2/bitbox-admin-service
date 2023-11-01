@@ -26,26 +26,27 @@ public class AdminInfoResponse {
         // Admin인 계정이 본인 반 리스트 조회할 때
 
         List<ClassInfoResponse> result = new ArrayList<>();
-        if(classes != null) {
+        if (classes != null) {
             result = classes.stream()
                     .map(data -> ClassInfoResponse.builder()
                             .className(data.getClassName())
                             .classId(data.getClassId())
                             .classCode(data.getClassCode())
-                            .exams(  data.getExams().stream()
-                                    .map(ExamResponseByClassId::from)
+                            .exams(data.getExams().stream()
+                                    .filter(exam -> !exam.isDeleted()).map(
+                                            ExamResponseByClassId::from)
                                     .collect(Collectors.toList()))
                             .build())
                     .collect(Collectors.toList());
         }
 
         return AdminInfoResponse.builder()
-                    .adminName(adminInfo.getAdminName())
-                    .adminEmail(adminInfo.getAdminEmail())
-                    .adminProfileImg(adminInfo.getAdminProfileImg())
-                    .adminAuthority(adminInfo.getAdminAuthority())
-                    .adminId(adminInfo.getAdminId())
-                    .classInfoResponses(!result.isEmpty() ? result:adminInfo.getClassAdmins().stream().map(classAdmin ->
-                            ClassInfoResponse.ClassInfoResponse(classAdmin.getClasses())).collect(Collectors.toList())).build();
+                .adminName(adminInfo.getAdminName())
+                .adminEmail(adminInfo.getAdminEmail())
+                .adminProfileImg(adminInfo.getAdminProfileImg())
+                .adminAuthority(adminInfo.getAdminAuthority())
+                .adminId(adminInfo.getAdminId())
+                .classInfoResponses(!result.isEmpty() ? result : adminInfo.getClassAdmins().stream().map(classAdmin ->
+                        ClassInfoResponse.ClassInfoResponse(classAdmin.getClasses())).collect(Collectors.toList())).build();
     }
 }

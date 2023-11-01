@@ -18,15 +18,16 @@ public class ClassInfoResponse {
     private String className;
     private String classCode;
     private List<ExamResponseByClassId> exams;
+
     public static ClassInfoResponse ClassInfoResponse(Classes classes) {
         return ClassInfoResponse.builder()
                 .classId(classes.getClassId())
                 .className(classes.getClassName())
                 .classCode(classes.getClassCode())
                 .exams(
-                        classes.getExams().stream()
-                        .map(ExamResponseByClassId::from)
-                        .collect(Collectors.toList())
+                        classes.getExams().stream().filter(exam -> !exam.isDeleted())
+                                .map(ExamResponseByClassId::from)
+                                .collect(Collectors.toList())
                 )
                 .build();
     }
