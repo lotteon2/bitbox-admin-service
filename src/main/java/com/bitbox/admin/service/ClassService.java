@@ -12,11 +12,15 @@ import com.bitbox.admin.exception.InvalidClassIdException;
 import com.bitbox.admin.repository.AdminInfoRepository;
 import com.bitbox.admin.repository.ClassAdminInfoRepository;
 import com.bitbox.admin.repository.ClassInfoRepository;
+import io.github.bitbox.bitbox.dto.AdminBoardRegisterDto;
+import io.github.bitbox.bitbox.dto.AdminMemberBoardDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +32,8 @@ public class ClassService {
     private final ClassInfoRepository classInfoRepository;
     private final ClassAdminInfoRepository classAdminInfoRepository;
     private final AdminInfoRepository adminInfoRepository;
+    private final KafkaTemplate<String, AdminBoardRegisterDto> kafkaTemplate1;
+    private final KafkaTemplate<String, AdminMemberBoardDto> kafkaTemplate2;
 
     @Transactional
     public Long registerClassInfo(String adminId, ClassDto classDto) {
@@ -44,6 +50,10 @@ public class ClassService {
         ClassAdmin classAdmin = new ClassAdmin(classAdminId, classes, admin);
         classAdminInfoRepository.save(classAdmin);
 
+        kafkaTemplate1.send(
+                "adminBoardTopic",
+                AdminBoardRegisterDto.builder().classId(classes.getClassId()).classCode(classes.getClassCode()).build()
+        );
         return classes.getClassId();
     }
 
@@ -51,6 +61,9 @@ public class ClassService {
     public Boolean updateClassInfo(Long classId, ClassUpdateDto classUpdateDto){
         Classes classes = classInfoRepository.findById(classId).orElseThrow(()->new InvalidClassIdException("해당 클래스 아이디가 존재하지 않습니다."));
         classUpdateDto.covertClassInfoForUpdate(classes, classUpdateDto);
+        if(classUpdateDto.getIsDeleted()) {
+            kafkaTemplate2.send("adminMemberBoardTopic", AdminMemberBoardDto.builder().classId(classId).requestDate(LocalDateTime.now()).build());
+        }
         return true;
     }
 
