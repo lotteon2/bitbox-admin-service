@@ -20,6 +20,7 @@ public class ClassController {
 
     /**
      * 반 추가(반 이름, 반 코드)
+     * 어드민 매니저
      */
     @PostMapping("")
     public ResponseEntity<Long> registerClassInfo(@RequestHeader String memberId, @Valid @RequestBody ClassDto classDto){
@@ -29,6 +30,7 @@ public class ClassController {
     /**
      * @param classId
      * 클래스 정보 수정 (수료 여부, 이름)
+     * 어드민 매니저
      */
     @PatchMapping("/{classId}")
     public ResponseEntity<Boolean> updateClassInfo(@PathVariable Long classId, @RequestBody ClassUpdateDto classUpdateDto){
@@ -37,6 +39,7 @@ public class ClassController {
 
     /**
         class 전체 조회
+        어드민 매니저
      */
     @GetMapping("")
     public ResponseEntity<List<ClassInfoWithAdminList>> getAllClassInfo() {
