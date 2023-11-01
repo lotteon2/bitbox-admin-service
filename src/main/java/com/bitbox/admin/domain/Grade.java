@@ -28,9 +28,6 @@ public class Grade {
     @Column(nullable = false)
     private Long score;
 
-    @Column
-    private Long avgScore;
-
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean deleted;
 
