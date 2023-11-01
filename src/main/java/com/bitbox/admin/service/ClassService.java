@@ -51,7 +51,7 @@ public class ClassService {
         classAdminInfoRepository.save(classAdmin);
 
         kafkaTemplate1.send(
-                "adminBoardTopic",
+                "adminBoardCreateTopic",
                 AdminBoardRegisterDto.builder().classId(classes.getClassId()).classCode(classes.getClassCode()).build()
         );
         return classes.getClassId();
@@ -63,6 +63,7 @@ public class ClassService {
         Classes updatedClasses =  classUpdateDto.covertClassInfoForUpdate(classes, classUpdateDto);
         if(updatedClasses.isDeleted()) {
             kafkaTemplate2.send("adminMemberBoardTopic", AdminMemberBoardDto.builder().classId(classId).requestDate(LocalDateTime.now()).build());
+            kafkaTemplate2.send("adminBoardDeleteTopic", AdminMemberBoardDto.builder().classId(classId).requestDate(LocalDateTime.now()).build());
         }
         return true;
     }
