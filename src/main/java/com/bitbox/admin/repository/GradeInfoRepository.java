@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface GradeInfoRepository extends CrudRepository<Grade, Long> {
 
-    @Query(value = "SELECT new com.bitbox.admin.service.response.GradeByClassIdInfoResponse(g.gradeId, avg(g.score), g.exam.perfectScore, g.classes.classId, e.examName, g.memberInfo.memberId) FROM Grade g INNER JOIN Exam e ON g.exam.examId = e.examId WHERE g.classes.classId = :classId AND g.exam.deleted = false AND g.memberInfo.memberAuthority = 'TRAINEE' GROUP BY g.exam.examId")
+    @Query(value = "SELECT new com.bitbox.admin.service.response.GradeByClassIdInfoResponse(avg(g.score), g.exam.perfectScore, g.classes.classId, e.examName) FROM Grade g INNER JOIN Exam e ON g.exam.examId = e.examId WHERE g.classes.classId = :classId AND g.exam.deleted = false AND g.memberInfo.memberAuthority = 'TRAINEE' GROUP BY g.exam.examId")
     List<GradeByClassIdInfoResponse> findAllByClasses_ClassIdAndDeletedIsFalse(Long classId);
     @Query(value = "SELECT new com.bitbox.admin.service.response.GradeByExamIdInfoResponse(g.gradeId, g.memberInfo.memberId, g.memberInfo.memberName, e.examName, e.examId, g.score, e.perfectScore) FROM Grade g INNER JOIN Exam e ON g.exam.examId = e.examId WHERE e.examId = :examId AND e.deleted = false AND g.memberInfo.memberAuthority = 'TRAINEE'")
     List<GradeByExamIdInfoResponse> findAllByExam_ExamIdAndDeletedIsFalse(Long examId);
