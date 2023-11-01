@@ -54,7 +54,7 @@ public class AdminController {
      * @return
      */
     @GetMapping("/one")
-    public ResponseEntity<AdminInfoResponse> getAdminInfo(@Valid @RequestHeader String memberId, @RequestHeader AuthorityType memberAuthority){
+    public ResponseEntity<AdminInfoResponse> getAdminInfo(@RequestHeader String memberId, @RequestHeader AuthorityType memberAuthority){
         return ResponseEntity.ok(adminService.getAdminInfo(memberId, memberAuthority));
     }
 
