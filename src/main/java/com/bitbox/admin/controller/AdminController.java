@@ -22,20 +22,30 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    // Admin 추가 (카프카 완료)
+    /*
+     Admin 추가 (카프카 완료)
+     Admin, manager
+     manager가 admin 추가하려 하면 게이트웨이에서 짜르기
+     */
     @PostMapping("/{classId}")
     public ResponseEntity<String> registerAdminInfo(@Valid @RequestBody AdminDto adminDto,
                                                     @PathVariable("classId") Long classId) {
         return ResponseEntity.ok(adminService.registerAdminInfo(adminDto, classId).getAdminId());
     }
 
-    // 전체 관리자 정보 조회
+    /*
+    * 전체 관리자 정보 조회
+    * Admin, manager
+    * */
     @GetMapping("/{classId}")
     public ResponseEntity<List<AdminInfoResponse>> getAllAdminInfoByClassId(@Valid @PathVariable("classId") Long classId){
         return ResponseEntity.ok(adminService.getAllAdminInfo(classId));
     }
 
-    // 관리자 1명 정보 조회
+    /*
+     관리자 1명 정보 조회
+     Admin, manager, teacher
+     */
 
     /**
      *
@@ -48,7 +58,10 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getAdminInfo(memberId, memberAuthority));
     }
 
-    // 관리자 정보 수정, 삭제 (이미지, 비밀번호, 이름)
+    /* 관리자 정보 수정, 삭제 (이미지, 비밀번호, 이름)
+    Admin, manager
+    manager가 admin바꾸려고 하면 gateway에서 자르기
+     */
     @PatchMapping("/{adminId}")
     public ResponseEntity<Boolean> updateAdminInfo(@PathVariable String adminId, @Valid @RequestBody AdminUpdateDto adminDto){
         return ResponseEntity.ok(adminService.updateAdminInfo(adminId, adminDto));
@@ -59,22 +72,18 @@ public class AdminController {
      * @param adminId
      * @param adminDto
      * @return
+     * admin, manager, teacher
      */
     @PatchMapping("")
     public ResponseEntity<Boolean> updateMyAdminInfo(@RequestHeader String memberId, @Valid @RequestBody AdminUpdateDto adminDto){
         return ResponseEntity.ok(adminService.updateAdminInfo(memberId, adminDto));
     }
 
-    // 교육생 권한 수정 (+ 카프카 연동 OK)
+    /* 교육생 권한 수정 (+ 카프카 연동 OK)
+    * Admin, manager
+     */
     @PutMapping("")
     public ResponseEntity<Admin> updateAdminRole(@Valid @RequestBody MemberAuthorityDto memberAuthorityDto){
         return ResponseEntity.ok(adminService.updateAdminRole(memberAuthorityDto));
-    }
-
-    // 관리자 삭제
-    @DeleteMapping("")
-    public ResponseEntity<Void> deleteAdmin(@Valid @RequestBody String adminId) {
-        adminService.deleteAdmin(adminId);
-        return ResponseEntity.ok().build();
     }
 }
