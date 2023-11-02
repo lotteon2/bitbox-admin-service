@@ -56,7 +56,7 @@ public class AdminService {
 
         memberRegisterDtoKafkaTemplate.send(memberRegisterTopic, MemberRegisterDto.builder()
                         .id(admin.getAdminId())
-                        .classId(classId)
+                        .classId(null)
                         .authority(adminDto.getAdminAuthority())
                         .profileImg("")
                         .email(admin.getAdminEmail())
