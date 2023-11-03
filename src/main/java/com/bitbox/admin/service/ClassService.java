@@ -70,7 +70,6 @@ public class ClassService {
 
     public List<ClassInfoWithAdminList> getAllClassInfo(){
         List<ClassInfoWithAdminList> allClassInfoWithAdminList = classInfoRepository.findAllClassInfoWithAdminList();
-        System.out.println(allClassInfoWithAdminList.toString());
         return allClassInfoWithAdminList;
     }
 
